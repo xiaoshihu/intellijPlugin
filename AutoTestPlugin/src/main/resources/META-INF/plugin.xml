@@ -1,0 +1,34 @@
+<idea-plugin>
+    <id>com.esen.autotest</id>
+    <name>AutoTestTool</name>
+    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">EsenSoftware</vendor>
+
+    <description><![CDATA[
+    Enter short description for your plugin here.<br>
+    <em>most HTML tags may be used</em>
+    ]]></description>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+    <depends>com.intellij.modules.platform</depends>
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+        <action id="org.esen.autotest.actions.screenshot" class="com.esen.screenshot" text="screenshot" description="screenshot">
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="alt J"/>
+        </action>
+
+        <group id="org.esen.autotest.actions.GroupedActions" text="AutoTestTools" popup="true" class="com.esen.groupClass">
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="org.esen.autotest.actions.screenshot"/>
+            <!-- 在group里面再添加动作，group里面是不需要类的，但是这种方式也是将group放入到一个菜单下面 -->
+            <action class="com.esen.showpic" id="org.esen.autotest.actions.showpic" text="ShowPicture" description="Show screenshot"> </action>
+        </group>
+    </actions>
+</idea-plugin>
