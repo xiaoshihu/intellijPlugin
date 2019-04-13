@@ -22,13 +22,11 @@
         <!-- Add your actions here -->
         <action id="org.esen.autotest.actions.screenshot" class="com.esen.screenshot" text="screenshot" description="screenshot">
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="alt J"/>
         </action>
-
         <group id="org.esen.autotest.actions.GroupedActions" text="AutoTestTools" popup="true" class="com.esen.groupClass">
             <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="org.esen.autotest.actions.screenshot"/>
-            <!-- 在group里面再添加动作，group里面是不需要类的，但是这种方式也是将group放入到一个菜单下面 -->
             <action class="com.esen.showpic" id="org.esen.autotest.actions.showpic" text="ShowPicture" description="Show screenshot"> </action>
+            <action class="com.esen.rename" id="org.esen.autotest.actions.rename" text="RenamePicture" description="Rename screenshot"> </action>
         </group>
     </actions>
 </idea-plugin>

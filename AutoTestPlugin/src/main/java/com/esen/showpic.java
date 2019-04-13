@@ -1,4 +1,5 @@
 package com.esen;
+
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
@@ -47,14 +48,13 @@ public class showpic extends AnAction {
     @Override
     public void update(AnActionEvent anActionEvent) {
         Project project = anActionEvent.getProject();
-//        Editor editor = anActionEvent.getData(PlatformDataKeys.EDITOR);
+        Editor editor = anActionEvent.getData(PlatformDataKeys.EDITOR);
         anActionEvent.getPresentation().setEnabledAndVisible(project != null);
-//        anActionEvent.getPresentation().setEnabledAndVisible(editor != null);
+        anActionEvent.getPresentation().setEnabledAndVisible(editor != null);
     }
 
     public static Path getpicpath(Project project, Editor editor) {
         VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
-//                get the doc filepath
         String filePath = file.getPath();
         Path FilePath = Paths.get(filePath);
         Path moudelPath = FilePath.getParent().getParent();

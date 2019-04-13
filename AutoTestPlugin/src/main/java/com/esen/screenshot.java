@@ -28,12 +28,11 @@ public class screenshot extends AnAction {
 
     public static Rectangle bounds;
     public static JFrame frame;
-    public static Project project;
-    public static Editor editor;
+    private static Project project;
+    private static Editor editor;
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
-        // TODO: insert action logic here
         project = anActionEvent.getProject();
         frame = WindowManager.getInstance().getFrame(project);
         bounds = frame.getBounds();
@@ -53,10 +52,7 @@ public class screenshot extends AnAction {
         if (capture.pickedImage != null) {
             frame.setBounds(bounds);
             Editor editor = anActionEvent.getData(PlatformDataKeys.EDITOR);
-            // TODO: 2019/4/7 get the path of these editor,and write the name of pic to the doc
-//                editor.getDocu
             VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
-//                get the doc filepath
             String filePath = file.getPath();
             Path FilePath = Paths.get(filePath);
             Path moudelPath = FilePath.getParent().getParent();
@@ -71,7 +67,6 @@ public class screenshot extends AnAction {
 
     public static void getFilePath(Path moudelPath) throws IOException {
         String elepath = "元素对象库";
-//        System.out.println(elepath);
         Path datadir = moudelPath.resolve(elepath);
         File datapath = new File(datadir.toString());
         if (datapath.exists()) {
@@ -81,32 +76,50 @@ public class screenshot extends AnAction {
                 picpath.mkdir();
             }
             String inputDialog = Messages.showInputDialog(project, "请填入截图名称", "PicName", Messages.getQuestionIcon());
-//            Messages.showMessageDialog(project, inputDialog, "input", Messages.getInformationIcon());
             if (inputDialog != null) {
-                while (inputDialog.length() == 0) {
-                    inputDialog = Messages.showInputDialog(project, "请填入截图名称", "PicName", Messages.getQuestionIcon());
+                if (inputDialog.length() == 0) {
+                    Messages.showErrorDialog(project, "未输入图片名称", "Error");
+                    return;
                 }
                 Path PicFile = pic.resolve(inputDialog + ".png");
-                ImageIO.write(capture.pickedImage, "png", new File(PicFile.toString()));
-                String picname = inputDialog + ".png";
-                CaretModel caretModel = editor.getCaretModel();
-                SelectionModel selectionModel = editor.getSelectionModel();
-                Document document = editor.getDocument();
-                int offset = caretModel.getOffset();
-                String insertname = "\"" + picname + "\"";
-                Runnable runnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        document.insertString(offset, insertname);
-                    }
-                };
-                WriteCommandAction.runWriteCommandAction(project, runnable);
-                caretModel.moveToOffset(offset + insertname.length());
-//                selectionModel.setSelection(offset, offset + insertname.length());
+                Path checkpath = checkpath(project, PicFile);
+                if (checkpath != null) {
+                    ImageIO.write(capture.pickedImage, "png", new File(checkpath.toString()));
+                    String picname = inputDialog + ".png";
+                    CaretModel caretModel = editor.getCaretModel();
+                    SelectionModel selectionModel = editor.getSelectionModel();
+                    Document document = editor.getDocument();
+                    int offset = caretModel.getOffset();
+                    String insertname = "\"" + picname + "\"";
+                    Runnable runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            document.insertString(offset, insertname);
+                        }
+                    };
+                    WriteCommandAction.runWriteCommandAction(project, runnable);
+                    caretModel.moveToOffset(offset + insertname.length());
+                }
             }
         } else {
             Messages.showMessageDialog(project, "元素对象库文件夹不存在!", "Error", Messages.getErrorIcon());
         }
+    }
+
+    public static Path checkpath(Project project, Path getpath) {
+        File getpathfile = new File(getpath.toString());
+        if (!getpathfile.exists()) {
+            return getpath;
+        } else {
+            Path dirpath = getpath.getParent();
+            String inputDialog = Messages.showInputDialog(project, "图片名称已经存在，请输入新的图片名称", "Picname", Messages.getQuestionIcon());
+            if (inputDialog == null) {
+                return null;
+            }
+            Path newpicpath = dirpath.resolve(inputDialog + ".png");
+            checkpath(project, newpicpath);
+        }
+        return null;
     }
 
     @Override
