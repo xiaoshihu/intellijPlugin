@@ -25,7 +25,6 @@ public class showpic extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
-//        // TODO: insert action logic here
         Project project = anActionEvent.getProject();
         Editor editor = anActionEvent.getData(PlatformDataKeys.EDITOR);
         Path picpath = getpicpath(project, editor);

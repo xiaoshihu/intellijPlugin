@@ -18,13 +18,12 @@ public class rename extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
-//        // TODO: insert action logic here
         Project project = anActionEvent.getProject();
         Editor editor = anActionEvent.getData(PlatformDataKeys.EDITOR);
         Path picpath = showpic.getpicpath(project, editor);
         if (picpath != null) {
             Path FilePath = picpath.getParent();
-            String newname = Messages.showInputDialog(project, "请输入新名称：", "rename", Messages.getQuestionIcon());
+            String newname = Messages.showInputDialog(project, "请输入新名称：", "Rename", Messages.getQuestionIcon());
             if (newname != null) {
                 if (newname.length() == 0) {
                     Messages.showErrorDialog(project, "未输入图片名称", "Error");
@@ -37,26 +36,27 @@ public class rename extends AnAction {
                     SelectionModel selectionModel = editor.getSelectionModel();
                     CaretModel caretModel = editor.getCaretModel();
                     Document document = editor.getDocument();
-
-                    int selectionStart = selectionModel.getSelectionStart();
-                    int selectionEnd = selectionModel.getSelectionEnd();
-
-//                    document.deleteString(selectionStart,selectionEnd);
-                    File tempFile = new File(checkpath.toString());
-                    String insertname = tempFile.getName().replace(".png", "");
-                    Runnable runnable = new Runnable() {
-                        @Override
-                        public void run() {
-                            document.deleteString(selectionStart, selectionEnd);
-                            int offset = caretModel.getOffset();
-                            document.insertString(offset, insertname);
-                        }
-                    };
-                    WriteCommandAction.runWriteCommandAction(project, runnable);
                     File oldpic = new File(picpath.toString());
-                    oldpic.renameTo(new File(checkpath.toString()));
-                    int offset = caretModel.getOffset();
-                    caretModel.moveToOffset(insertname.length() + offset);
+                    if (oldpic.renameTo(new File(checkpath.toString()))) {
+                        int selectionStart = selectionModel.getSelectionStart();
+                        int selectionEnd = selectionModel.getSelectionEnd();
+                        File tempFile = new File(checkpath.toString());
+                        String insertname = tempFile.getName().replace(".png", "");
+                        Runnable runnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                document.deleteString(selectionStart, selectionEnd);
+                                int offset = caretModel.getOffset();
+                                document.insertString(offset, insertname);
+                            }
+                        };
+                        WriteCommandAction.runWriteCommandAction(project, runnable);
+                        int offset = caretModel.getOffset();
+                        caretModel.moveToOffset(insertname.length() + offset);
+                    } else {
+                        Messages.showErrorDialog(project, "重命名图片失败！", "Error");
+                    }
+
                 }
             }
         }
