@@ -30,6 +30,7 @@ public class screenshot extends AnAction {
     public static JFrame frame;
     private static Project project;
     private static Editor editor;
+    private static String insertname;
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
@@ -44,12 +45,14 @@ public class screenshot extends AnAction {
             e.printStackTrace();
         }
         try {
+            // 将窗口隐藏起来
             frame.setBounds(-100, -100, 0, 0);
             test.captureRectangle();
         } catch (IOException e) {
             e.printStackTrace();
         }
         if (capture.pickedImage != null) {
+            // 将窗口还原
             frame.setBounds(bounds);
             Editor editor = anActionEvent.getData(PlatformDataKeys.EDITOR);
             VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
@@ -75,7 +78,8 @@ public class screenshot extends AnAction {
             if (!picpath.exists()) {
                 picpath.mkdir();
             }
-            String inputDialog = Messages.showInputDialog(project, "请填入截图名称", "PicName", Messages.getQuestionIcon());
+            String def_input = Long.toString(System.currentTimeMillis()) + Integer.toString((int)(Math.random() * 11));
+            String inputDialog = Messages.showInputDialog(project, "请填入截图名称", "PicName", Messages.getQuestionIcon(),def_input,null);
             if (inputDialog != null) {
                 if (inputDialog.length() == 0) {
                     Messages.showErrorDialog(project, "未输入图片名称", "Error");
@@ -90,7 +94,12 @@ public class screenshot extends AnAction {
                     SelectionModel selectionModel = editor.getSelectionModel();
                     Document document = editor.getDocument();
                     int offset = caretModel.getOffset();
-                    String insertname = "\"" + picname + "\"";
+                    if (capture.offsetx == 0 && capture.offsety == 0) {
+                        insertname = "\"" + picname + "\"";
+                    } else {
+                        insertname = "\"" + picname + "\"," + "(" + Integer.toString(capture.offsetx) + "," + Integer.toString(capture.offsety) + ")";
+                    }
+
                     Runnable runnable = new Runnable() {
                         @Override
                         public void run() {
@@ -139,6 +148,8 @@ class capture {
     private Robot robot;
     private BufferedImage fullScreenImage;
     public static BufferedImage pickedImage;
+    public static int offsetx = 0;
+    public static int offsety = 0;
 
     capture() throws AWTException {
         robot = new Robot();
@@ -146,6 +157,7 @@ class capture {
 
     void captureRectangle() throws IOException {
         labFullScreenImage.reset();
+        // 获取全屏幕的截图，添加到容器中，之后用来显示
         Rectangle rectangle = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
         fullScreenImage = robot.createScreenCapture(rectangle);
         ImageIcon icon = new ImageIcon(fullScreenImage);
@@ -162,7 +174,29 @@ class capture {
         final JDialog dialog = new JDialog();
         JPanel cp = (JPanel) dialog.getContentPane();
         cp.setLayout(new BorderLayout());
+        // 这个监听鼠标的点击
         labFullScreenImage.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                x1 = e.getX();
+                y1 = e.getY();
+                offsetx = 0;
+                offsety = 0;
+                if (recH >= 5 && recW >= 5)
+                    if (!haveDragged) {
+                        // 对屏幕上面的区域进行截取
+                        //                    pickedImage = fullScreenImage.getSubimage(recX, recY, recW, recH);
+                        // 将覆盖在屏幕上的图片拿掉
+                        dialog.setVisible(false);
+                        dialog.dispose();
+                        if ((x1 >= recX && x1 <= recX + recW) && (y1 >= recY && y1 <= recY + recH)) {
+                            offsetx = x1 - (recX + (int) recW / 2);
+                            offsety = y1 - (recY + (int) recH / 2);
+                        }
+                    }
+
+            }
 
             @Override
             public void mousePressed(MouseEvent e) {
@@ -173,16 +207,22 @@ class capture {
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (haveDragged) {
+                    // 对屏幕上面的区域进行截取
                     pickedImage = fullScreenImage.getSubimage(recX, recY, recW, recH);
-                    dialog.setVisible(false);
-                    dialog.dispose();
+                    // 将覆盖在屏幕上的图片拿掉
+//                    dialog.setVisible(false);
+//                    dialog.dispose();
+                    haveDragged = false;
                 }
-                haveDragged = false;
+
             }
+
         });
+        // 这个监听鼠标的移动
         labFullScreenImage.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
+                // 由于没有拖拽操作了 ，所以，这个正方形就固定下来了
                 haveDragged = true;
                 x2 = e.getX();
                 y2 = e.getY();
@@ -199,9 +239,15 @@ class capture {
 
             @Override
             public void mouseMoved(MouseEvent e) {
+                if (recH >= 5 && recW >= 5) {
+                    int cux = e.getX();
+                    int cuy = e.getY();
+                    labFullScreenImage.getloc(recX, recY, recW, recH, true, cux, cuy);
+                }
                 labFullScreenImage.drawCross(e.getX(), e.getY());
             }
         });
+        // 这个监听键盘事件
         dialog.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -247,26 +293,49 @@ class BackgroundImage extends JLabel {
     private int y;
     private int h;
     private int w;
+    private int cux;
+    private int cuy;
+    private boolean getpic = false;
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        if (!getpic) {
+            g.setColor(Color.RED);
+//            g.drawLine(lineX, 0, lineX, getHeight());
+//            g.drawLine(0, lineY, getWidth(), lineY);
 
-        g.setColor(Color.BLUE);
-        g.drawLine(lineX, 0, lineX, getHeight());
-        g.drawLine(0, lineY, getWidth(), lineY);
+            if (w > 0 && h > 0) {
+                g.drawLine(x + (int) w / 2, y + (int) h / 2 - 10, x + (int) w / 2, y + (int) h / 2 + 10);
+                g.drawLine(x + (int) w / 2 - 10, y + (int) h / 2, x + (int) w / 2 + 10, y + (int) h / 2);
+                g.drawRect(x, y, w, h);
+                String area = Integer.toString(w) + " * " + Integer.toString(h);
+                g.drawString(area, x + (int) w + 20, y + (int) h + 20);
+            }
 
-        if (w > 0 && h > 0) {
+            if (oldRect != null && oldRect.width > 0 && oldRect.height > 0) {
+                g.setColor(Color.GRAY);
+                g.drawRect(oldRect.x, oldRect.y, oldRect.width, oldRect.height);
+                String area = Integer.toString(oldRect.width) + " * " + Integer.toString(oldRect.height);
+                g.drawString(area, oldRect.x + (int) oldRect.width / 2 - 15, oldRect.y + (int) oldRect.height / 2);
+            }
+        } else {
+            g.setColor(Color.RED);
+            String orgin = "0,0";
+            g.drawString(orgin, x + (int) w / 2 + 5, y + (int) h / 2 - 5);
             g.drawRect(x, y, w, h);
+            g.drawLine(x + (int) w / 2, y + (int) h / 2 - 10, x + (int) w / 2, y + (int) h / 2 + 10);
+            g.drawLine(x + (int) w / 2 - 10, y + (int) h / 2, x + (int) w / 2 + 10, y + (int) h / 2);
             String area = Integer.toString(w) + " * " + Integer.toString(h);
-            g.drawString(area, x + (int) w / 2 - 15, y + (int) h / 2);
-        }
-
-        if (oldRect != null && oldRect.width > 0 && oldRect.height > 0) {
-            g.setColor(Color.GRAY);
-            g.drawRect(oldRect.x, oldRect.y, oldRect.width, oldRect.height);
-            String area = Integer.toString(oldRect.width) + " * " + Integer.toString(oldRect.height);
-            g.drawString(area, oldRect.x + (int) oldRect.width / 2 - 15, oldRect.y + (int) oldRect.height / 2);
+            g.drawString(area, x + (int) w + 20, y + (int) h + 20);
+            // 接下来需要判断这个点是不是在区域里面
+            if ((cux >= x && cux <= x + w) && (cuy >= y && cuy <= y + h)) {
+                int offx = cux - (x + (int) w / 2);
+                int offy = cuy - (y + (int) h / 2);
+                String offset = Integer.toString(offx) + "," + Integer.toString(offy);
+                g.drawString(offset, cux + 10, cuy + 10);
+                g.drawRect(x, y, w, h);
+            }
         }
 
     }
@@ -280,6 +349,17 @@ class BackgroundImage extends JLabel {
         this.y = y;
         this.h = height;
         this.w = width;
+        repaint();
+    }
+
+    void getloc(int x, int y, int width, int height, boolean get, int cux, int cuy) {
+        this.x = x;
+        this.y = y;
+        this.h = height;
+        this.w = width;
+        this.getpic = get;
+        this.cux = cux;
+        this.cuy = cuy;
         repaint();
     }
 

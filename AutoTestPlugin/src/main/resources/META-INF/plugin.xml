@@ -20,9 +20,11 @@
         <action id="org.esen.autotest.actions.screenshot" class="com.esen.screenshot" text="Screenshot" description="Screenshot">
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </action>
-        <group id="org.esen.autotest.actions.GroupedActions" text="AutoTestTools" popup="true" class="com.esen.groupClass">
+        <action id="org.esen.autotest.actions.showpic" class="com.esen.showpic" text="ShowPicture" description="Show screenshot">
             <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="org.esen.autotest.actions.screenshot"/>
-            <action class="com.esen.showpic" id="org.esen.autotest.actions.showpic" text="ShowPicture" description="Show screenshot"> </action>
+        </action>
+        <group id="org.esen.autotest.actions.GroupedActions" text="AutoTestTools" popup="true" class="com.esen.groupClass">
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="org.esen.autotest.actions.showpic"/>
             <action class="com.esen.rename" id="org.esen.autotest.actions.rename" text="RenamePicture" description="Rename screenshot"> </action>
             <action class="com.esen.deletepic" id="org.esen.autotest.actions.deletepic" text="DeletePicture" description="Delete screenshot"> </action>
         </group>
