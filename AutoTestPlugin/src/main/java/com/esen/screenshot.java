@@ -66,6 +66,24 @@ public class screenshot extends AnAction {
                 e.printStackTrace();
             }
         }
+        // 这里表示并没有抓取图片，而是获取了坐标点
+        else {
+            frame.setBounds(bounds);
+            Editor editor = anActionEvent.getData(PlatformDataKeys.EDITOR);
+            CaretModel caretModel = editor.getCaretModel();
+            SelectionModel selectionModel = editor.getSelectionModel();
+            Document document = editor.getDocument();
+            int offset = caretModel.getOffset();
+            insertname = "(" + Integer.toString(capture.offsetx) + "," + Integer.toString(capture.offsety) + ")";
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    document.insertString(offset, insertname);
+                }
+            };
+            WriteCommandAction.runWriteCommandAction(project, runnable);
+            caretModel.moveToOffset(offset + insertname.length());
+        }
     }
 
     public static void getFilePath(Path moudelPath) throws IOException {
@@ -78,8 +96,8 @@ public class screenshot extends AnAction {
             if (!picpath.exists()) {
                 picpath.mkdir();
             }
-            String def_input = Long.toString(System.currentTimeMillis()) + Integer.toString((int)(Math.random() * 11));
-            String inputDialog = Messages.showInputDialog(project, "请填入截图名称", "PicName", Messages.getQuestionIcon(),def_input,null);
+            String def_input = Long.toString(System.currentTimeMillis()) + Integer.toString((int) (Math.random() * 11));
+            String inputDialog = Messages.showInputDialog(project, "请填入截图名称", "PicName", Messages.getQuestionIcon(), def_input, null);
             if (inputDialog != null) {
                 if (inputDialog.length() == 0) {
                     Messages.showErrorDialog(project, "未输入图片名称", "Error");
@@ -183,10 +201,10 @@ class capture {
                 y1 = e.getY();
                 offsetx = 0;
                 offsety = 0;
-                if (recH >= 5 && recW >= 5)
+                if (recH >= 5 && recW >= 5) {
                     if (!haveDragged) {
                         // 对屏幕上面的区域进行截取
-                        //                    pickedImage = fullScreenImage.getSubimage(recX, recY, recW, recH);
+                        // pickedImage = fullScreenImage.getSubimage(recX, recY, recW, recH);
                         // 将覆盖在屏幕上的图片拿掉
                         dialog.setVisible(false);
                         dialog.dispose();
@@ -195,7 +213,14 @@ class capture {
                             offsety = y1 - (recY + (int) recH / 2);
                         }
                     }
-
+                }
+                else {
+                    dialog.setVisible(false);
+                    dialog.dispose();
+                    pickedImage = null;
+                    offsetx = x1;
+                    offsety = y1;
+                }
             }
 
             @Override
