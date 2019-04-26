@@ -68,6 +68,9 @@ public class screenshot extends AnAction {
         }
         // 这里表示并没有抓取图片，而是获取了坐标点
         else {
+            if (capture.offsetx < 0&capture.offsety<0){
+                return;
+            }
             frame.setBounds(bounds);
             Editor editor = anActionEvent.getData(PlatformDataKeys.EDITOR);
             CaretModel caretModel = editor.getCaretModel();
@@ -280,6 +283,8 @@ class capture {
                     pickedImage = null;
                     dialog.setVisible(false);
                     dialog.dispose();
+                    offsetx = -1;
+                    offsety = -1;
                     screenshot.frame.setBounds(screenshot.bounds);
                 }
             }
