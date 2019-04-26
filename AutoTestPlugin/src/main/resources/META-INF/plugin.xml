@@ -20,8 +20,13 @@
         <action id="org.esen.autotest.actions.screenshot" class="com.esen.screenshot" text="Screenshot" description="Screenshot">
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </action>
-        <action id="org.esen.autotest.actions.showpic" class="com.esen.showpic" text="ShowPicture" description="Show screenshot">
+
+        <action id="org.esen.autotest.actions.delayscreenshot" class="com.esen.delayscreenshot" text="3s'screenshot" description="delayscreenshot">
             <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="org.esen.autotest.actions.screenshot"/>
+        </action>
+
+        <action id="org.esen.autotest.actions.showpic" class="com.esen.showpic" text="ShowPicture" description="Show screenshot">
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="org.esen.autotest.actions.delayscreenshot"/>
         </action>
         <group id="org.esen.autotest.actions.GroupedActions" text="AutoTestTools" popup="true" class="com.esen.groupClass">
             <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="org.esen.autotest.actions.showpic"/>
