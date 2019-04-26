@@ -21,9 +21,11 @@ public class rename extends AnAction {
         Project project = anActionEvent.getProject();
         Editor editor = anActionEvent.getData(PlatformDataKeys.EDITOR);
         Path picpath = showpic.getpicpath(project, editor);
+        SelectionModel selection = editor.getSelectionModel();
+        String selectedText = selection.getSelectedText();
         if (picpath != null) {
             Path FilePath = picpath.getParent();
-            String newname = Messages.showInputDialog(project, "请输入新名称：", "Rename", Messages.getQuestionIcon());
+            String newname = Messages.showInputDialog(project, "请输入新名称：", "Rename", Messages.getQuestionIcon(), selectedText, null);
             if (newname != null) {
                 if (newname.length() == 0) {
                     Messages.showErrorDialog(project, "未输入图片名称", "Error");

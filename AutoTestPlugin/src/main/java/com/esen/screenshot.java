@@ -68,7 +68,7 @@ public class screenshot extends AnAction {
         }
         // 这里表示并没有抓取图片，而是获取了坐标点
         else {
-            if (capture.offsetx < 0&capture.offsety<0){
+            if (capture.offsetx < 0 & capture.offsety < 0) {
                 return;
             }
             frame.setBounds(bounds);
@@ -216,8 +216,7 @@ class capture {
                             offsety = y1 - (recY + (int) recH / 2);
                         }
                     }
-                }
-                else {
+                } else {
                     dialog.setVisible(false);
                     dialog.dispose();
                     pickedImage = null;
