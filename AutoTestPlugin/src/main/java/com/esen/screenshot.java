@@ -46,14 +46,15 @@ public class screenshot extends AnAction {
         }
         try {
             // 将窗口隐藏起来
-            frame.setBounds(-100, -100, 0, 0);
+            frame.setLocation(-10000,-10000);
             test.captureRectangle();
         } catch (IOException e) {
             e.printStackTrace();
         }
         if (capture.pickedImage != null) {
             // 将窗口还原
-            frame.setBounds(bounds);
+//            frame.setBounds(bounds);
+            frame.setLocation(bounds.x,bounds.y);
             Editor editor = anActionEvent.getData(PlatformDataKeys.EDITOR);
             VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
             String filePath = file.getPath();
@@ -71,7 +72,8 @@ public class screenshot extends AnAction {
             if (capture.offsetx < 0 & capture.offsety < 0) {
                 return;
             }
-            frame.setBounds(bounds);
+//            frame.setBounds(bounds);
+            frame.setLocation(bounds.x,bounds.y);
             Editor editor = anActionEvent.getData(PlatformDataKeys.EDITOR);
             CaretModel caretModel = editor.getCaretModel();
             SelectionModel selectionModel = editor.getSelectionModel();
@@ -118,7 +120,7 @@ public class screenshot extends AnAction {
                     if (capture.offsetx == 0 && capture.offsety == 0) {
                         insertname = "\"" + picname + "\"";
                     } else {
-                        insertname = "\"" + picname + "\"," + "(" + Integer.toString(capture.offsetx) + "," + Integer.toString(capture.offsety) + ")";
+                        insertname = "(\"" + picname + "\"," + "(" + Integer.toString(capture.offsetx) + "," + Integer.toString(capture.offsety) + "))";
                     }
 
                     Runnable runnable = new Runnable() {
