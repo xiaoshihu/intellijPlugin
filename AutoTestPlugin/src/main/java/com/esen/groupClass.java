@@ -15,6 +15,6 @@ public class groupClass extends DefaultActionGroup {
         Editor editor = anActionEvent.getData(PlatformDataKeys.EDITOR);
         anActionEvent.getPresentation().setEnabledAndVisible(project != null);
         anActionEvent.getPresentation().setEnabledAndVisible(editor != null);
-        anActionEvent.getPresentation().setIcon(AllIcons.General.User);
+        anActionEvent.getPresentation().setIcon(AllIcons.General.ExternalTools);
     }
 }

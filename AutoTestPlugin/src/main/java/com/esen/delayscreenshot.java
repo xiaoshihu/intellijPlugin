@@ -45,7 +45,7 @@ public class delayscreenshot extends AnAction {
         }
         try {
             // 将窗口隐藏起来
-            frame.setLocation(-10000,-10000);
+            frame.setLocation(-(bounds.width+100),-(bounds.height+100));
 //            frame.setBounds(-100, -100, 0, 0);
             Thread.sleep(2500);
             test.captureRectangle();

@@ -46,7 +46,8 @@ public class screenshot extends AnAction {
         }
         try {
             // 将窗口隐藏起来
-            frame.setLocation(-10000,-10000);
+//            frame.setLocation(-10000,-10000);
+            frame.setLocation(-(bounds.width+100),-(bounds.height+100));
             test.captureRectangle();
         } catch (IOException e) {
             e.printStackTrace();
