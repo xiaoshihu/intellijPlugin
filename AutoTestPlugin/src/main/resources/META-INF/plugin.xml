@@ -32,6 +32,7 @@
             <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="org.esen.autotest.actions.showpic"/>
             <action class="com.esen.rename" id="org.esen.autotest.actions.rename" text="RenamePicture" description="Rename screenshot"> </action>
             <action class="com.esen.deletepic" id="org.esen.autotest.actions.deletepic" text="DeletePicture" description="Delete screenshot"> </action>
+            <action class="com.esen.split" id="org.esen.autotest.actions.split" text="SplitWindows" description="SplitWindows"> </action>
         </group>
     </actions>
 </idea-plugin>
