@@ -34,6 +34,7 @@ public class showpic extends AnAction {
                 int height = image.getHeight();
                 int width = image.getWidth();
                 PicComponent component = new PicComponent(image, height, width);
+//                看到java里面的这种写法总是觉得很奇怪，反正就是这样使用的
                 final JBPopup popup = JBPopupFactory.getInstance().createComponentPopupBuilder(component, null)
                         .createPopup();
                 popup.setSize(new Dimension(width, height));

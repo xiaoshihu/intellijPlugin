@@ -35,6 +35,7 @@ public class screenshot extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
         project = anActionEvent.getProject();
+//        获取pycharm组件的大小和边界
         frame = WindowManager.getInstance().getFrame(project);
         bounds = frame.getBounds();
         editor = anActionEvent.getData(PlatformDataKeys.EDITOR);
@@ -168,6 +169,7 @@ class capture {
     private int x1, y1, x2, y2;
     private int recX, recY, recH, recW;
     private boolean haveDragged = false;
+//    其实这个是一个标签组件，这个标签组件里面仅仅放置了一个图片
     private BackgroundImage labFullScreenImage = new BackgroundImage();
     private Robot robot;
     private BufferedImage fullScreenImage;
@@ -180,11 +182,13 @@ class capture {
     }
 
     void captureRectangle() throws IOException {
+//        初始化一些变量，里面代表的东西就是，选中图片之后的位置，以免变量会一致保存
         labFullScreenImage.reset();
         // 获取全屏幕的截图，添加到容器中，之后用来显示
         Rectangle rectangle = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
         fullScreenImage = robot.createScreenCapture(rectangle);
         ImageIcon icon = new ImageIcon(fullScreenImage);
+//        应该是为这个标签组件添加一个图标，只不过这个图标非常的大
         labFullScreenImage.setIcon(icon);
         showDialog();
     }
@@ -195,9 +199,12 @@ class capture {
 
 
     private void showDialog() {
+//        创建一个对话框顶层组件
         final JDialog dialog = new JDialog();
+//        这里就是在对话框顶层组件里面创建了一个画板组件，所以，后面是没有再有添加动作的
         JPanel cp = (JPanel) dialog.getContentPane();
         cp.setLayout(new BorderLayout());
+        // 给标签组件添加监听事件
         // 这个监听鼠标的点击
         labFullScreenImage.addMouseListener(new MouseAdapter() {
 
@@ -210,7 +217,6 @@ class capture {
                 if (recH >= 5 && recW >= 5) {
                     if (!haveDragged) {
                         // 对屏幕上面的区域进行截取
-                        // pickedImage = fullScreenImage.getSubimage(recX, recY, recW, recH);
                         // 将覆盖在屏幕上的图片拿掉
                         dialog.setVisible(false);
                         dialog.dispose();
@@ -272,6 +278,7 @@ class capture {
                 if (recH >= 5 && recW >= 5) {
                     int cux = e.getX();
                     int cuy = e.getY();
+//                    对标签组件进行重画
                     labFullScreenImage.getloc(recX, recY, recW, recH, true, cux, cuy);
                 }
                 labFullScreenImage.drawCross(e.getX(), e.getY());
@@ -291,11 +298,16 @@ class capture {
                 }
             }
         });
+//        设置画布的一些东西
+//        将标签组件添加到画板的中间，前面的一个参数代表的是组件的位置
         cp.add(BorderLayout.CENTER, labFullScreenImage);
+//        下面就是设置对话框的一些东西
         dialog.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+//        让对话框总是显示在最前面
         dialog.setAlwaysOnTop(true);
         dialog.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
         dialog.setUndecorated(true);
+//        设置截图对话框的大小，其实，就是将截图的对话框放置在屏幕上
         dialog.setSize(dialog.getMaximumSize());
         dialog.setModal(true);
         dialog.setVisible(true);
