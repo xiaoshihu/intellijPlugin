@@ -33,6 +33,7 @@ public class delayscreenshot extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
+
         project = anActionEvent.getProject();
         frame = WindowManager.getInstance().getFrame(project);
         bounds = frame.getBounds();
