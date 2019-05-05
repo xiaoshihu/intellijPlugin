@@ -13,6 +13,8 @@
     <depends>com.intellij.modules.platform</depends>
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
+        <toolWindow id="AutoTool" anchor="left" icon="AllIcons.Toolwindows.ToolWindowFavorites" secondary="true"
+                    factoryClass="com.esen.ToolWindow"/>
     </extensions>
 
     <actions>
