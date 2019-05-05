@@ -21,6 +21,10 @@ import java.nio.file.Paths;
 import static com.esen.Public.checkpath;
 import static com.esen.Public.insertdoc;
 
+// TODO: 2019/5/6 需要获取当前行的缩进，保持下次输入的缩进是一致的，就不用自己手动调整代码的缩进
+// TODO: 2019/5/6 将代码布局调整好，看哪些常用的方法需要加入到按钮里面去
+// TODO: 2019/5/6 不同的按钮触发不同的函数，输出不同的内容
+
 // 好吧，之前没有做过GUI的东西，原来ide都已经变得这么强大了
 public class MyToolWindow {
     private JButton refreshToolWindowButton;
