@@ -1,7 +1,6 @@
 package com.esen;
 
 import com.intellij.ide.actions.SplitAction;
-import com.intellij.ide.actions.SplitVerticallyAction;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;

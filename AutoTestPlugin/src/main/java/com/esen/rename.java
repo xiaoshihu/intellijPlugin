@@ -14,6 +14,8 @@ import com.intellij.openapi.ui.Messages;
 import java.io.File;
 import java.nio.file.Path;
 
+import static com.esen.Public.checkpath;
+
 public class rename extends AnAction {
 
     @Override
@@ -33,7 +35,7 @@ public class rename extends AnAction {
                 }
 
                 Path newpicpath = FilePath.resolve(newname + ".png");
-                Path checkpath = screenshot.checkpath(project, newpicpath);
+                Path checkpath = checkpath(project, newpicpath);
                 if (checkpath != null) {
                     SelectionModel selectionModel = editor.getSelectionModel();
                     CaretModel caretModel = editor.getCaretModel();
