@@ -26,10 +26,13 @@ public class delayscreenshot extends screenshot {
         } catch (AWTException e) {
             e.printStackTrace();
         }
+        // 将窗口隐藏起来
+        frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
+
         try {
-            // 将窗口隐藏起来
-            frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
+
             Thread.sleep(2500);
+            assert test != null;
             test.captureRectangle();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
