@@ -12,11 +12,7 @@ import com.intellij.openapi.wm.WindowManager;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,9 +31,12 @@ public class MyToolWindow {
     private JButton skhoverButton;
     private JButton skdragDropButton;
     private JButton skdragDropByoffButton;
+    private JButton delayButton;
     private JPanel mouseevents;
     private JPanel keyboardevents;
     private JPanel picture;
+    //    这个静态变量做延迟用
+    private static Boolean delay = false;
 
     /**
      * 为组件元素添加监听事件
@@ -49,6 +48,11 @@ public class MyToolWindow {
         skdoubleclickButton.addActionListener(e -> base("self.skdoubleclick"));
         skrightClickButton.addActionListener(e -> base("self.skrightClick"));
         skhoverButton.addActionListener(e -> base("self.skhover"));
+        delayButton.addActionListener(e -> setdelay());
+    }
+
+    public void setdelay() {
+        delay = true;
     }
 
     // 这个方法在点击按钮之后会自动调用
@@ -71,7 +75,14 @@ public class MyToolWindow {
         }
         // 将窗口隐藏起来
         frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
-
+        if (delay) {
+            delay = false;
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         try {
             // 开始捕捉屏幕
             assert test != null;
@@ -90,8 +101,8 @@ public class MyToolWindow {
 //                获取截图产生的参数，然后，再与传递进来的内容合并成需要插入的内容
                 String picparam = getinsertname(project, editor, moudelPath);
                 // TODO: 2019/5/6 这里需要重新组织，看需要写入上面内容，并且，估计还需要调整光标的位置
-                String insertstring = funcname + "(" + picparam +")";
-                insertdoc(project,editor,insertstring);
+                String insertstring = funcname + "(" + picparam + ")";
+                insertdoc(project, editor, insertstring);
             } catch (IOException e) {
                 Messages.showErrorDialog(project, "保存图片失败!", "Error");
                 e.printStackTrace();
@@ -104,7 +115,7 @@ public class MyToolWindow {
             }
             frame.setLocation(bounds.x, bounds.y);
             String picparam = "(" + Integer.toString(Capture.offsetx) + "," + Integer.toString(Capture.offsety) + ")";
-            String insertstring = funcname + "(" + picparam +")";
+            String insertstring = funcname + "(" + picparam + ")";
             insertdoc(project, editor, insertstring);
         }
     }

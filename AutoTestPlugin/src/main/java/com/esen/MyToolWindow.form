@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="myToolWindowContent" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="22" y="23" width="460" height="561"/>
+      <xy x="22" y="23" width="460" height="606"/>
     </constraints>
     <properties>
       <enabled value="false"/>
@@ -291,7 +291,7 @@
           </component>
         </children>
       </grid>
-      <component id="9e312" class="javax.swing.JButton">
+      <component id="9e312" class="javax.swing.JButton" binding="delayButton">
         <constraints>
           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
