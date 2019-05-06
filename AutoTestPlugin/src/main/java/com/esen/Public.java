@@ -4,6 +4,7 @@ import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.CaretModel;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
@@ -27,6 +28,7 @@ public class Public {
     public static void insertdoc(Project project, Editor editor, String insertname) {
         Document document = editor.getDocument();
         CaretModel caretModel = editor.getCaretModel();
+//        获取当前光标的位置，看这里怎么实现获取这行的缩进
         int offset = caretModel.getOffset();
         Runnable runnable = new Runnable() {
             @Override
@@ -37,6 +39,40 @@ public class Public {
 //        执行写入内容的操作
         WriteCommandAction.runWriteCommandAction(project, runnable);
         caretModel.moveToOffset(offset + insertname.length());
+    }
+
+    /**
+     * 向编辑器中插入指定的文本，
+     *
+     * @param project    当前激活工程的project实例
+     * @param editor     当前编辑器的editor实例
+     * @param insertname 需要插入的内容
+     * @return void
+     * @author xiaoshihu
+     * @date 2019/5/6 10:23
+     */
+    public static void re_insertdoc(Project project, Editor editor, String insertname) {
+        // TODO: 2019/5/6 仅仅偏移好像行不通，需要真实的输入一些东西，我先看看获取startline是什么
+        Document document = editor.getDocument();
+        CaretModel caretModel = editor.getCaretModel();
+//        获取当前光标的位置，看这里怎么实现获取这行的缩进
+        int offset = caretModel.getOffset();
+//        获取当前行的起始位置,目前看来好像并不是的
+        int lineStart = caretModel.getVisualLineStart();
+
+        System.out.println(lineStart);
+        System.out.println(offset);
+
+        String insert = insertname + "\n";
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                document.insertString(offset, insert);
+            }
+        };
+//        执行写入内容的操作
+        WriteCommandAction.runWriteCommandAction(project, runnable);
+        caretModel.moveToOffset(offset + insertname.length() + lineStart);
     }
 
     /**

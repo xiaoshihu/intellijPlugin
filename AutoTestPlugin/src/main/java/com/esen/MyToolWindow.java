@@ -102,7 +102,7 @@ public class MyToolWindow {
                 String picparam = getinsertname(project, editor, moudelPath);
                 // TODO: 2019/5/6 这里需要重新组织，看需要写入上面内容，并且，估计还需要调整光标的位置
                 String insertstring = funcname + "(" + picparam + ")";
-                insertdoc(project, editor, insertstring);
+                re_insertdoc(project, editor, insertstring);
             } catch (IOException e) {
                 Messages.showErrorDialog(project, "保存图片失败!", "Error");
                 e.printStackTrace();
@@ -116,7 +116,7 @@ public class MyToolWindow {
             frame.setLocation(bounds.x, bounds.y);
             String picparam = "(" + Integer.toString(Capture.offsetx) + "," + Integer.toString(Capture.offsety) + ")";
             String insertstring = funcname + "(" + picparam + ")";
-            insertdoc(project, editor, insertstring);
+            re_insertdoc(project, editor, insertstring);
         }
     }
 
