@@ -41,7 +41,7 @@
                   <horizontalTextPosition value="11"/>
                   <selected value="true"/>
                   <text value="click(target: Union[Tuple, str, Match])"/>
-                  <toolTipText value=""/>
+                  <toolTipText value="点击截取图片中心点（相对中心点的偏移）或者指定的坐标"/>
                   <verticalAlignment value="0"/>
                 </properties>
                 <clientProperties>
@@ -59,7 +59,7 @@
                   <horizontalTextPosition value="11"/>
                   <selected value="true"/>
                   <text value="doubleclick(target: Union[Tuple, str, Match])"/>
-                  <toolTipText value=""/>
+                  <toolTipText value="双击截取图片中心点（相对中心点的偏移）或者指定的坐标"/>
                   <verticalAlignment value="0"/>
                 </properties>
                 <clientProperties>
@@ -77,7 +77,7 @@
                   <horizontalTextPosition value="11"/>
                   <selected value="true"/>
                   <text value="rightClick(target: Union[Tuple, str, Match])"/>
-                  <toolTipText value=""/>
+                  <toolTipText value="右键点击截取图片中心点（相对中心点的偏移）或者指定的坐标"/>
                   <verticalAlignment value="0"/>
                 </properties>
                 <clientProperties>
@@ -95,7 +95,7 @@
                   <horizontalTextPosition value="11"/>
                   <selected value="true"/>
                   <text value="hover(target: Union[Tuple, str, Match])"/>
-                  <toolTipText value=""/>
+                  <toolTipText value="移动鼠标到截取图片中心点（相对中心点的偏移）或者指定的坐标"/>
                   <verticalAlignment value="0"/>
                 </properties>
                 <clientProperties>
@@ -113,7 +113,7 @@
                   <horizontalTextPosition value="11"/>
                   <selected value="true"/>
                   <text value="dragDrop(target, target2)"/>
-                  <toolTipText value=""/>
+                  <toolTipText value="拖拽tagrget到target2,两个参数都为图片或坐标"/>
                   <verticalAlignment value="0"/>
                 </properties>
                 <clientProperties>
@@ -131,7 +131,7 @@
                   <horizontalTextPosition value="11"/>
                   <selected value="true"/>
                   <text value="dragDropByoff(target, target2)"/>
-                  <toolTipText value=""/>
+                  <toolTipText value="以target2为相对偏移拖拽target，target为图片或坐标，target2为坐标"/>
                   <verticalAlignment value="0"/>
                 </properties>
                 <clientProperties>
@@ -149,7 +149,7 @@
                   <horizontalTextPosition value="11"/>
                   <selected value="true"/>
                   <text value="wheel(target: Union[Tuple, str, Match], steps=-100)"/>
-                  <toolTipText value=""/>
+                  <toolTipText value="移动鼠标到图片或坐标后模拟鼠标滚轮事件，step为滚动的距离"/>
                   <verticalAlignment value="0"/>
                 </properties>
                 <clientProperties>
@@ -191,7 +191,7 @@
                   <horizontalTextPosition value="11"/>
                   <selected value="true"/>
                   <text value="type(target: Union[Tuple, str, Match])"/>
-                  <toolTipText value=""/>
+                  <toolTipText value="点击图片或坐标后在当前光标处模拟键盘输入，不要输入中文，可以输入按键和组合键"/>
                   <verticalAlignment value="0"/>
                 </properties>
                 <clientProperties>
@@ -209,7 +209,7 @@
                   <horizontalTextPosition value="11"/>
                   <selected value="true"/>
                   <text value="paste(target: Union[Tuple, str, Match])"/>
-                  <toolTipText value=""/>
+                  <toolTipText value="点击图片或坐标后将字符串粘贴到当前光标处"/>
                   <verticalAlignment value="0"/>
                 </properties>
                 <clientProperties>
@@ -249,7 +249,7 @@
                   <horizontalTextPosition value="11"/>
                   <selected value="true"/>
                   <text value="find(target: Union[Tuple, str])"/>
-                  <toolTipText value=""/>
+                  <toolTipText value="在当前屏幕上查找截取的图片，返回找到图片位置"/>
                   <verticalAlignment value="0"/>
                 </properties>
                 <clientProperties>
@@ -267,7 +267,7 @@
                   <horizontalTextPosition value="11"/>
                   <selected value="true"/>
                   <text value="exists(target: str)"/>
-                  <toolTipText value=""/>
+                  <toolTipText value="判断图片是否出现在当前屏幕上"/>
                   <verticalAlignment value="0"/>
                 </properties>
                 <clientProperties>
@@ -285,7 +285,7 @@
                   <horizontalTextPosition value="11"/>
                   <selected value="true"/>
                   <text value="waitVanish(target: str)"/>
-                  <toolTipText value=""/>
+                  <toolTipText value="等待图片在当前屏幕上消失"/>
                   <verticalAlignment value="0"/>
                 </properties>
                 <clientProperties>
@@ -312,7 +312,7 @@
           <horizontalTextPosition value="11"/>
           <selected value="true"/>
           <text value="3s Delay"/>
-          <toolTipText value=""/>
+          <toolTipText value="先点击该按钮，再点击其他按钮，截取图片的操作会延迟3秒"/>
           <verticalAlignment value="0"/>
         </properties>
         <clientProperties>
