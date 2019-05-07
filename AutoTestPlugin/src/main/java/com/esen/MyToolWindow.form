@@ -139,7 +139,7 @@
                   <html.disable class="java.lang.Boolean" value="false"/>
                 </clientProperties>
               </component>
-              <component id="cbe95" class="javax.swing.JButton">
+              <component id="cbe95" class="javax.swing.JButton" binding="skwheelButton">
                 <constraints>
                   <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -181,7 +181,7 @@
             </properties>
             <border type="none"/>
             <children>
-              <component id="88497" class="javax.swing.JButton">
+              <component id="88497" class="javax.swing.JButton" binding="typeButton">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -199,7 +199,7 @@
                   <html.disable class="java.lang.Boolean" value="false"/>
                 </clientProperties>
               </component>
-              <component id="45666" class="javax.swing.JButton">
+              <component id="45666" class="javax.swing.JButton" binding="skpasteButton">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -239,7 +239,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="427f7" class="javax.swing.JButton">
+              <component id="427f7" class="javax.swing.JButton" binding="skfindButton">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -257,7 +257,7 @@
                   <html.disable class="java.lang.Boolean" value="false"/>
                 </clientProperties>
               </component>
-              <component id="ceaa1" class="javax.swing.JButton">
+              <component id="ceaa1" class="javax.swing.JButton" binding="existsButton">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -275,7 +275,7 @@
                   <html.disable class="java.lang.Boolean" value="false"/>
                 </clientProperties>
               </component>
-              <component id="4be34" class="javax.swing.JButton">
+              <component id="4be34" class="javax.swing.JButton" binding="skwaitVanishButton">
                 <constraints>
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>

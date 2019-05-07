@@ -37,6 +37,12 @@ public class MyToolWindow {
     private JPanel mouseevents;
     private JPanel keyboardevents;
     private JPanel picture;
+    private JButton skwheelButton;
+    private JButton skfindButton;
+    private JButton existsButton;
+    private JButton skwaitVanishButton;
+    private JButton skpasteButton;
+    private JButton typeButton;
     //    这个静态变量做延迟用
     private static Boolean delay = false;
 
@@ -55,6 +61,12 @@ public class MyToolWindow {
 //        拖拽的插入内容好像不一样
         skdragDropButton.addActionListener(e -> drag("self.skdragDrop"));
         skdragDropByoffButton.addActionListener(e -> dragoff("self.skdragDropByoff"));
+        skwheelButton.addActionListener(e -> wheel("self.skwheel"));
+        skfindButton.addActionListener(e -> base("self.skfind"));
+        existsButton.addActionListener(e -> base_if("self.skexists"));
+        skwaitVanishButton.addActionListener(e -> base_if("self.skwaitVanish"));
+        skpasteButton.addActionListener(e -> paste("self.skpaste"));
+        typeButton.addActionListener(e -> type("self.sktype"));
     }
 
     public void setdelay() {
@@ -123,6 +135,68 @@ public class MyToolWindow {
             re_insertdoc(project, editor, insertstring);
         }
     }
+
+    // 这个方法在点击按钮之后会自动调用
+    public void base_if(String funcname) {
+//        获取当前的project
+        Project project = getProject();
+//        根绝project获取editor
+        Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
+        assert editor != null;
+//        获取pycharm组件的大小和边界
+        JFrame frame = WindowManager.getInstance().getFrame(project);
+        assert frame != null;
+        Rectangle bounds = frame.getBounds();
+        Capture test = null;
+        try {
+            test = new Capture();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+        // 将窗口隐藏起来
+        frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
+        if (delay) {
+            delay = false;
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            // 开始捕捉屏幕
+            assert test != null;
+            test.captureRectangle();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        还原窗口
+        frame.setLocation(bounds.x, bounds.y);
+        if (Capture.pickedImage != null) {
+            VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
+            String filePath = file.getPath();
+            Path FilePath = Paths.get(filePath);
+            Path moudelPath = FilePath.getParent().getParent();
+            try {
+//                获取截图产生的参数，然后，再与传递进来的内容合并成需要插入的内容
+                String picparam = getinsertname(project, editor, moudelPath);
+                // TODO: 2019/5/6 这里需要重新组织，看需要写入上面内容，并且，估计还需要调整光标的位置
+                String insertstring = "if " + funcname + "(" + picparam + "):";
+                if_insertdoc(project, editor, insertstring);
+            } catch (IOException e) {
+                Messages.showErrorDialog(project, "保存图片失败!", "Error");
+                e.printStackTrace();
+            }
+        }
+        // 这里表示并没有抓取图片，而是获取了坐标点
+        else {
+            if (Capture.offsetx == -1 & Capture.offsety == -1) {
+                return;
+            }
+            Messages.showErrorDialog(project, "判断图片存在和消失必须截取图片！", "Error");
+        }
+    }
+
 
     /**
      * 拖拽到其他元素的方法会调用该函数
@@ -297,7 +371,7 @@ public class MyToolWindow {
      * @author xiaoshihu
      * @date 2019/5/7 15:16
      */
-    public void sendkey(String funcname) {
+    public void paste(String funcname) {
 //        String funcname = "self.base";
 //        获取当前的project
         Project project = getProject();
@@ -340,8 +414,14 @@ public class MyToolWindow {
             try {
 //                获取截图产生的参数，然后，再与传递进来的内容合并成需要插入的内容
                 String picparam = getinsertname(project, editor, moudelPath);
-                // TODO: 2019/5/6 这里需要重新组织，看需要写入上面内容，并且，估计还需要调整光标的位置
-                String insertstring = funcname + "(" + picparam + ")";
+
+                String input = Messages.showInputDialog(project, "请输入粘贴内容：", "Input", Messages.getQuestionIcon());
+                String insertstring = null;
+                if (input != null && !input.equals("")) {
+                    insertstring = funcname + "(" + picparam + ", \"" + input + "\")";
+                } else {
+                    insertstring = funcname + "(" + picparam + ", " + "填入参数" + ")";
+                }
                 re_insertdoc(project, editor, insertstring);
             } catch (IOException e) {
                 Messages.showErrorDialog(project, "保存图片失败!", "Error");
@@ -354,7 +434,149 @@ public class MyToolWindow {
                 return;
             }
             String picparam = "(" + Integer.toString(Capture.offsetx) + "," + Integer.toString(Capture.offsety) + ")";
-            String insertstring = funcname + "(" + picparam + ")";
+            String input = Messages.showInputDialog(project, "请输入粘贴内容：", "Input", Messages.getQuestionIcon());
+            String insertstring = null;
+            if (input != null && !input.equals("")) {
+                insertstring = funcname + "(" + picparam + ", \"" + input + "\")";
+            } else {
+                insertstring = funcname + "(" + picparam + ", " + "填入参数" + ")";
+            }
+            re_insertdoc(project, editor, insertstring);
+        }
+    }
+
+    /**
+     * 输入方法的按钮在调用的时候调用这个方法，与其他方法不同的是需要考虑插入内容之后光标在什么位置。
+     *
+     * @param funcname
+     * @author xiaoshihu
+     * @date 2019/5/7 15:16
+     */
+    public void type(String funcname) {
+//        String funcname = "self.base";
+//        获取当前的project
+        Project project = getProject();
+//        根绝project获取editor
+        Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
+        assert editor != null;
+//        获取pycharm组件的大小和边界
+        JFrame frame = WindowManager.getInstance().getFrame(project);
+        assert frame != null;
+        Rectangle bounds = frame.getBounds();
+        Capture test = null;
+        try {
+            test = new Capture();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+        // 将窗口隐藏起来
+        frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
+        if (delay) {
+            delay = false;
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            // 开始捕捉屏幕
+            assert test != null;
+            test.captureRectangle();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        frame.setLocation(bounds.x, bounds.y);
+        if (Capture.pickedImage != null) {
+            VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
+            String filePath = file.getPath();
+            Path FilePath = Paths.get(filePath);
+            Path moudelPath = FilePath.getParent().getParent();
+            try {
+//                获取截图产生的参数，然后，再与传递进来的内容合并成需要插入的内容
+                String picparam = getinsertname(project, editor, moudelPath);
+                String insertstring = funcname + "(" + picparam + ", " + "填入参数" + ")";
+                re_insertdoc(project, editor, insertstring);
+            } catch (IOException e) {
+                Messages.showErrorDialog(project, "保存图片失败!", "Error");
+                e.printStackTrace();
+            }
+        }
+        // 这里表示并没有抓取图片，而是获取了坐标点
+        else {
+            if (Capture.offsetx == -1 & Capture.offsety == -1) {
+                return;
+            }
+            String picparam = "(" + Integer.toString(Capture.offsetx) + "," + Integer.toString(Capture.offsety) + ")";
+            String insertstring = funcname + "(" + picparam + ", " + "填入参数" + ")";
+            re_insertdoc(project, editor, insertstring);
+        }
+    }
+
+    /**
+     * 输入方法的按钮在调用的时候调用这个方法，与其他方法不同的是需要考虑插入内容之后光标在什么位置。
+     *
+     * @param funcname
+     * @author xiaoshihu
+     * @date 2019/5/7 15:16
+     */
+    public void wheel(String funcname) {
+//        String funcname = "self.base";
+//        获取当前的project
+        Project project = getProject();
+//        根绝project获取editor
+        Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
+        assert editor != null;
+//        获取pycharm组件的大小和边界
+        JFrame frame = WindowManager.getInstance().getFrame(project);
+        assert frame != null;
+        Rectangle bounds = frame.getBounds();
+        Capture test = null;
+        try {
+            test = new Capture();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+        // 将窗口隐藏起来
+        frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
+        if (delay) {
+            delay = false;
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            // 开始捕捉屏幕
+            assert test != null;
+            test.captureRectangle();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        frame.setLocation(bounds.x, bounds.y);
+        if (Capture.pickedImage != null) {
+            VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
+            String filePath = file.getPath();
+            Path FilePath = Paths.get(filePath);
+            Path moudelPath = FilePath.getParent().getParent();
+            try {
+//                获取截图产生的参数，然后，再与传递进来的内容合并成需要插入的内容
+                String picparam = getinsertname(project, editor, moudelPath);
+                String insertstring = funcname + "(" + picparam + ", " + "steps=-100" + ")";
+                re_insertdoc(project, editor, insertstring);
+            } catch (IOException e) {
+                Messages.showErrorDialog(project, "保存图片失败!", "Error");
+                e.printStackTrace();
+            }
+        }
+        // 这里表示并没有抓取图片，而是获取了坐标点
+        else {
+            if (Capture.offsetx == -1 & Capture.offsety == -1) {
+                return;
+            }
+            String picparam = "(" + Integer.toString(Capture.offsetx) + "," + Integer.toString(Capture.offsety) + ")";
+            String insertstring = funcname + "(" + picparam + ", " + "steps=-100" + ")";
             re_insertdoc(project, editor, insertstring);
         }
     }
