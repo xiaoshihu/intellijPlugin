@@ -20,7 +20,6 @@ public class BackgroundImage extends JLabel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (offset) {
-            // TODO: 2019/5/7 实现显示相对位置的坐标
             g.setColor(Color.RED);
             String orgin = "0,0";
             int center_x = Capture.save_recX + (int) Capture.save_recW / 2;
@@ -108,7 +107,6 @@ public class BackgroundImage extends JLabel {
         repaint();
     }
 
-    // TODO: 2019/5/7 还是需要将上一次截取图片的坐标传递过来，因为这个类并没有静态变量
     void drawCross_off(int x, int y, boolean off) {
         this.offset = off;
         this.x = x;

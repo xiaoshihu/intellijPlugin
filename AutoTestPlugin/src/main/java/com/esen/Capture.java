@@ -25,7 +25,6 @@ public class Capture {
     private int x2;
     private int y2;
     //    其实是由于这几个变量未设置为静态变量，所以，没有出现什么问题，每次运行之后，这些变量都会回收了
-    // TODO: 2019/5/7 所以我可以利用全局变量去保存这些数据，但是需要注意静态变量的重置
     private int recX;
     private int recY;
     private int recH;
@@ -257,9 +256,7 @@ public class Capture {
                     dialog.setVisible(false);
                     dialog.dispose();
                     pickedImage = null;
-                    // TODO: 2019/5/7 首先需要算出上一次的操作点，而不仅仅是图片的相关东西
 //                    获取
-//                    System.out.printf("%d,%d,%d,%d,%d,%d",save_recX,save_recY,save_recW,save_recH,save_offx,save_offy);
                     int center_x = save_recX + (int) save_recW / 2;
                     int center_y = save_recY + (int) save_recH / 2;
                     int tag_x = center_x + save_offx;
@@ -279,10 +276,6 @@ public class Capture {
         });
         // 这个监听鼠标的移动
         labFullScreenImage.addMouseMotionListener(new MouseMotionAdapter() {
-
-            // TODO: 2019/5/7 需要改变这个监听事件，并且估计还需要改变之前的绘图的方法，让之前的方法将十字架绘制出来，
-            //  但是现在问题是，之前截取的图片的坐标的中心点怎么传递过来？能不能用一个全局变量去保存？好像可行。
-            //  因为这个方法只会在这种情况下去调用。现在想想还是比较复杂的，入股想要实现全屏幕的偏移。
             @Override
             public void mouseMoved(MouseEvent e) {
                 labFullScreenImage.drawCross_off(e.getX(), e.getY(), true);

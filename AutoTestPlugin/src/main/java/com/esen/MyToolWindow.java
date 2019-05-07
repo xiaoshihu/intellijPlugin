@@ -21,9 +21,7 @@ import java.nio.file.Paths;
 
 import static com.esen.Public.*;
 
-// TODO: 2019/5/6 需要获取当前行的缩进，保持下次输入的缩进是一致的，就不用自己手动调整代码的缩进
-// TODO: 2019/5/6 将代码布局调整好，看哪些常用的方法需要加入到按钮里面去
-// TODO: 2019/5/6 不同的按钮触发不同的函数，输出不同的内容
+// TODO: 2019/5/7 在点击了按钮之后，按钮会一直处于被选中状态，导致光标不会在editor里面
 
 public class MyToolWindow {
     private JButton skclickButton;
