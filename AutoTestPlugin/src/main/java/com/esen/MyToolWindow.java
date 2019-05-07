@@ -44,7 +44,7 @@ public class MyToolWindow {
     /**
      * 为组件元素添加监听事件
      *
-     * @param toolWindow 顶层组件
+     * @param toolWindow intellij
      */
     public MyToolWindow(ToolWindow toolWindow) {
         skclickButton.addActionListener(e -> base("self.skclick"));

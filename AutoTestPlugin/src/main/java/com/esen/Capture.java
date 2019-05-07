@@ -43,6 +43,7 @@ public class Capture {
         labFullScreenImage.reset();
         // 获取全屏幕的截图，添加到容器中，之后用来显示
         Rectangle rectangle = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+//        截取整个屏幕
         fullScreenImage = robot.createScreenCapture(rectangle);
         ImageIcon icon = new ImageIcon(fullScreenImage);
 //        这个函数就是设置标签组件显示的图片
@@ -53,7 +54,7 @@ public class Capture {
     /**
      * 不支持默认参数真的是鸡肋，这么简单的东西我还要去搞一个重载
      *
-     * @param save
+     * @param save 就是一个用来重载的参数
      * @return void
      * @author xiaoshihu
      * @date 2019/5/7 15:46
@@ -152,7 +153,6 @@ public class Capture {
 //                    dialog.dispose();
                     haveDragged = false;
                 }
-
             }
 
         });
