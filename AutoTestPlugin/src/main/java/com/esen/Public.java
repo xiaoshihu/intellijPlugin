@@ -1,10 +1,7 @@
 package com.esen;
 
 import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.openapi.editor.CaretModel;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.SelectionModel;
+import com.intellij.openapi.editor.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
@@ -42,7 +39,7 @@ public class Public {
     }
 
     /**
-     * 向编辑器中插入指定的文本，
+     * 向编辑器中插入指定的文本，并且重置鼠标位置，并且选中插入的内容，可以很方便删除
      *
      * @param project    当前激活工程的project实例
      * @param editor     当前编辑器的editor实例
@@ -58,12 +55,29 @@ public class Public {
 //        获取当前光标的位置，看这里怎么实现获取这行的缩进
         int offset = caretModel.getOffset();
 //        获取当前行的起始位置,目前看来好像并不是的
-        int lineStart = caretModel.getVisualLineStart();
+        LogicalPosition logicalPosition = caretModel.getLogicalPosition();
+        int line = logicalPosition.line;
+//        获取指定行的第一个字符串的起始位置，其实就是行的起始位置，我现在需要知道的是第一个不为空格的字符的位置，看样子只能
+//        获取这行的内容，然后对内容进行解析
+        int lineStartOffset = document.getLineStartOffset(line);
+        SelectionModel selectionModel = editor.getSelectionModel();
+        selectionModel.setSelection(lineStartOffset, offset);
+        String selectedText = selectionModel.getSelectedText();
+//        获取到选中的字符串之后，可以利用正则表达式获取里面连续的空白字符
+        int space_num = 0;
+        String addspace = "";
+        if (selectedText != null) {
+            // TODO: 2019/5/7 这里可不可能发生风险？
+//            去除选中字符串的首尾之后，对长度进行比较，然后获取前面空格的数量
+            int length = selectedText.length();
+            int sublength = leftTrim(selectedText).length();
+            space_num = length - sublength;
+        }
+        for (int i = 0; i < space_num; i++) {
+            addspace += " ";
+        }
 
-        System.out.println(lineStart);
-        System.out.println(offset);
-
-        String insert = insertname + "\n";
+        String insert = insertname + "\n" + addspace;
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -72,7 +86,24 @@ public class Public {
         };
 //        执行写入内容的操作
         WriteCommandAction.runWriteCommandAction(project, runnable);
-        caretModel.moveToOffset(offset + insertname.length() + lineStart);
+        caretModel.moveToOffset(offset + insert.length());
+        selectionModel.setSelection(offset, offset + insert.length());
+    }
+
+    /**
+     * 去除字符串坐标的空格
+     *
+     * @param str 需要处理的字符串
+     * @return java.lang.String
+     * @author xiaoshihu
+     * @date 2019/5/7 11:40
+     */
+    public static String leftTrim(String str) {
+        if (str == null || str.equals("")) {
+            return str;
+        } else {
+            return str.replaceAll("^[　 ]+", "");
+        }
     }
 
     /**

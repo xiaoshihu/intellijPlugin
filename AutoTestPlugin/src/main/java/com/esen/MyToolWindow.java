@@ -13,6 +13,8 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -48,7 +50,11 @@ public class MyToolWindow {
         skdoubleclickButton.addActionListener(e -> base("self.skdoubleclick"));
         skrightClickButton.addActionListener(e -> base("self.skrightClick"));
         skhoverButton.addActionListener(e -> base("self.skhover"));
+//        延迟函数绑定的监听事件
         delayButton.addActionListener(e -> setdelay());
+//        拖拽的插入内容好像不一样
+        skdragDropButton.addActionListener(e -> drag("self.skdragDrop"));
+        skdragDropByoffButton.addActionListener(e -> dragoff("self.skdragDropByoff"));
     }
 
     public void setdelay() {
@@ -57,6 +63,241 @@ public class MyToolWindow {
 
     // 这个方法在点击按钮之后会自动调用
     public void base(String funcname) {
+//        获取当前的project
+        Project project = getProject();
+//        根绝project获取editor
+        Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
+        assert editor != null;
+//        获取pycharm组件的大小和边界
+        JFrame frame = WindowManager.getInstance().getFrame(project);
+        assert frame != null;
+        Rectangle bounds = frame.getBounds();
+        Capture test = null;
+        try {
+            test = new Capture();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+        // 将窗口隐藏起来
+        frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
+        if (delay) {
+            delay = false;
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            // 开始捕捉屏幕
+            assert test != null;
+            test.captureRectangle();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        还原窗口
+        frame.setLocation(bounds.x, bounds.y);
+        if (Capture.pickedImage != null) {
+            VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
+            String filePath = file.getPath();
+            Path FilePath = Paths.get(filePath);
+            Path moudelPath = FilePath.getParent().getParent();
+            try {
+//                获取截图产生的参数，然后，再与传递进来的内容合并成需要插入的内容
+                String picparam = getinsertname(project, editor, moudelPath);
+                // TODO: 2019/5/6 这里需要重新组织，看需要写入上面内容，并且，估计还需要调整光标的位置
+                String insertstring = funcname + "(" + picparam + ")";
+                re_insertdoc(project, editor, insertstring);
+            } catch (IOException e) {
+                Messages.showErrorDialog(project, "保存图片失败!", "Error");
+                e.printStackTrace();
+            }
+        }
+        // 这里表示并没有抓取图片，而是获取了坐标点
+        else {
+            if (Capture.offsetx == -1 & Capture.offsety == -1) {
+                return;
+            }
+            String picparam = "(" + Integer.toString(Capture.offsetx) + "," + Integer.toString(Capture.offsety) + ")";
+            String insertstring = funcname + "(" + picparam + ")";
+            re_insertdoc(project, editor, insertstring);
+        }
+    }
+
+    /**
+     * 拖拽到其他元素的方法会调用该函数
+     *
+     * @param funcname api函数的名称
+     * @author xiaoshihu
+     * @date 2019/5/7 15:13
+     */
+    // TODO: 2019/5/7 我希望的功能是在点击之后，首先插入的内容是函数加上需要拖拽的图片，然后再自动重新截取第二张图
+    // 这个方法在点击按钮之后会自动调用
+    public void drag(String funcname) {
+//        获取当前的project
+        Project project = getProject();
+//        根绝project获取editor
+        Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
+        assert editor != null;
+//        获取pycharm组件的大小和边界
+        JFrame frame = WindowManager.getInstance().getFrame(project);
+        assert frame != null;
+        Rectangle bounds = frame.getBounds();
+        Capture test = null;
+        try {
+            test = new Capture();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+        // 将窗口隐藏起来
+        frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
+        if (delay) {
+            delay = false;
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            // 开始捕捉屏幕
+            assert test != null;
+            test.captureRectangle();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        还原窗口
+        frame.setLocation(bounds.x, bounds.y);
+        if (Capture.pickedImage != null) {
+            VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
+            String filePath = file.getPath();
+            Path FilePath = Paths.get(filePath);
+            Path moudelPath = FilePath.getParent().getParent();
+            try {
+//                获取截图产生的参数，然后，再与传递进来的内容合并成需要插入的内容
+                String picparam = getinsertname(project, editor, moudelPath);
+                String insertstring = null;
+                String picparam2 = get_second_param(project, editor);
+                if (picparam2 != null) {
+                    insertstring = funcname + "(" + picparam + ", " + picparam2 + ")";
+                } else {
+                    insertstring = funcname + "(" + picparam + ", 填入参数" + ")";
+                }
+                re_insertdoc(project, editor, insertstring);
+            } catch (IOException e) {
+                Messages.showErrorDialog(project, "保存图片失败!", "Error");
+                e.printStackTrace();
+            }
+        }
+        // 这里表示并没有抓取图片，而是获取了坐标点
+        else {
+            if (Capture.offsetx == -1 & Capture.offsety == -1) {
+                return;
+            }
+            String picparam = "(" + Integer.toString(Capture.offsetx) + "," + Integer.toString(Capture.offsety) + ")";
+            String insertstring = null;
+            String picparam2 = get_second_param(project, editor);
+            if (picparam2 != null) {
+                insertstring = funcname + "(" + picparam + ", " + picparam2 + ")";
+            } else {
+                insertstring = funcname + "(" + picparam + ", 填入参数" + ")";
+            }
+            re_insertdoc(project, editor, insertstring);
+        }
+    }
+
+    /**
+     * 拖拽元素到相对偏移位置函数会调用该方法，与上一个拖拽方法的区别是，这个函数的第二个参数一定是一个相对坐标
+     *
+     * @param funcname api方法的名称
+     * @author xiaoshihu
+     * @date 2019/5/7 15:14
+     */
+    public void dragoff(String funcname) {
+//        获取当前的project
+        Project project = getProject();
+//        根绝project获取editor
+        Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
+        assert editor != null;
+//        获取pycharm组件的大小和边界
+        JFrame frame = WindowManager.getInstance().getFrame(project);
+        assert frame != null;
+        Rectangle bounds = frame.getBounds();
+        Capture test = null;
+        try {
+            test = new Capture();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+        // 将窗口隐藏起来
+        frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
+        if (delay) {
+            delay = false;
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            // 开始捕捉屏幕
+            assert test != null;
+            Boolean save = true;
+//            使用函数重载实现静态变量复制
+            test.captureRectangle(save);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        还原窗口
+        frame.setLocation(bounds.x, bounds.y);
+        if (Capture.pickedImage != null) {
+            VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
+            String filePath = file.getPath();
+            Path FilePath = Paths.get(filePath);
+            Path moudelPath = FilePath.getParent().getParent();
+            try {
+//                获取截图产生的参数，然后，再与传递进来的内容合并成需要插入的内容
+                String picparam = getinsertname(project, editor, moudelPath);
+                // TODO: 2019/5/7 感觉还是需要做不少的东西，需要在屏幕上显示之前需要操作的点的位置，用十字架标记出来，
+                //  并且鼠标在屏幕上的移动，都会显示相对这个点的偏移，估计还需要修改之前捕捉屏幕的方法
+                String picparam2 = get_offset(project, editor);
+                String insertstring = null;
+                if (picparam2 != null) {
+                    insertstring = funcname + "(" + picparam + ", " + picparam2 + ")";
+                } else {
+                    insertstring = funcname + "(" + picparam + ", 填入参数" + ")";
+                }
+                re_insertdoc(project, editor, insertstring);
+            } catch (IOException e) {
+                Messages.showErrorDialog(project, "保存图片失败!", "Error");
+                e.printStackTrace();
+            }
+        }
+        // 这里表示并没有抓取图片，而是获取了坐标点
+        else {
+            if (Capture.offsetx == -1 & Capture.offsety == -1) {
+                return;
+            }
+            String picparam = "(" + Integer.toString(Capture.offsetx) + "," + Integer.toString(Capture.offsety) + ")";
+            String picparam2 = get_offset(project, editor);
+            String insertstring = null;
+            if (picparam2 != null) {
+                insertstring = funcname + "(" + picparam + ", " + picparam2 + ")";
+            } else {
+                insertstring = funcname + "(" + picparam + ", 填入参数" + ")";
+            }
+            re_insertdoc(project, editor, insertstring);
+        }
+    }
+
+    /**
+     * 输入方法的按钮在调用的时候调用这个方法，与其他方法不同的是需要考虑插入内容之后光标在什么位置。
+     *
+     * @param funcname
+     * @author xiaoshihu
+     * @date 2019/5/7 15:16
+     */
+    public void sendkey(String funcname) {
 //        String funcname = "self.base";
 //        获取当前的project
         Project project = getProject();
@@ -90,9 +331,8 @@ public class MyToolWindow {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        frame.setLocation(bounds.x, bounds.y);
         if (Capture.pickedImage != null) {
-            // 将窗口还原
-            frame.setLocation(bounds.x, bounds.y);
             VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
             String filePath = file.getPath();
             Path FilePath = Paths.get(filePath);
@@ -110,17 +350,135 @@ public class MyToolWindow {
         }
         // 这里表示并没有抓取图片，而是获取了坐标点
         else {
-            if (Capture.offsetx < 0 & Capture.offsety < 0) {
+            if (Capture.offsetx == -1 & Capture.offsety == -1) {
                 return;
             }
-            frame.setLocation(bounds.x, bounds.y);
             String picparam = "(" + Integer.toString(Capture.offsetx) + "," + Integer.toString(Capture.offsety) + ")";
             String insertstring = funcname + "(" + picparam + ")";
             re_insertdoc(project, editor, insertstring);
         }
     }
 
+    /**
+     * 需要两个图片作为参数的函数，可以利用这个函数实现连续两次的截取
+     *
+     * @param project 当前工程实例
+     * @param editor  当前工程的编辑器实例
+     * @return java.lang.String 获取的第二个参数
+     * @author xiaoshihu
+     * @date 2019/5/7 11:49
+     */
+    public String get_second_param(Project project, Editor editor) {
+        assert editor != null;
+//        获取pycharm组件的大小和边界
+        JFrame frame = WindowManager.getInstance().getFrame(project);
+        assert frame != null;
+        Rectangle bounds = frame.getBounds();
+        Capture test = null;
+        try {
+            test = new Capture();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+        // 将窗口隐藏起来
+        frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
+        if (delay) {
+            delay = false;
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            // 开始捕捉屏幕
+            assert test != null;
+            test.captureRectangle();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        frame.setLocation(bounds.x, bounds.y);
+        if (Capture.pickedImage != null) {
+            VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
+            String filePath = file.getPath();
+            Path FilePath = Paths.get(filePath);
+            Path moudelPath = FilePath.getParent().getParent();
+            try {
+//                获取截图产生的参数，然后，再与传递进来的内容合并成需要插入的内容
+                String picparam = getinsertname(project, editor, moudelPath);
+                // TODO: 2019/5/6 这里需要重新组织，看需要写入上面内容，并且，估计还需要调整光标的位置
+                return picparam;
+            } catch (IOException e) {
+                Messages.showErrorDialog(project, "保存图片失败!", "Error");
+                e.printStackTrace();
+            }
+        }
+        // 这里表示并没有抓取图片，而是获取了坐标点
+        else {
+            if (Capture.offsetx == -1 & Capture.offsety == -1) {
+                // TODO: 2019/5/7 第二次选取有可能会取消操作，所以，那边还需要做判断,取消判断之后的光标位置需要变化
+                return null;
+            }
+            String picparam = "(" + Integer.toString(Capture.offsetx) + "," + Integer.toString(Capture.offsety) + ")";
+            return picparam;
+        }
+        return null;
+    }
 
+    /**
+     * 根据之前截取的图片或者坐标点，来显示当前鼠标相对这个的相对坐标
+     *
+     * @param project 当前工程实例
+     * @param editor  当前工程的编辑器实例
+     * @return java.lang.String 获取的偏移的坐标点
+     * @author xiaoshihu
+     * @date 2019/5/7 14:26
+     */
+    public String get_offset(Project project, Editor editor) {
+        assert editor != null;
+//        获取pycharm组件的大小和边界
+        JFrame frame = WindowManager.getInstance().getFrame(project);
+        assert frame != null;
+        Rectangle bounds = frame.getBounds();
+        Capture test = null;
+        try {
+            test = new Capture();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+        // 将窗口隐藏起来
+        frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
+        if (delay) {
+            delay = false;
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            // 开始捕捉屏幕
+            assert test != null;
+            test.captureRectangle_off();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        frame.setLocation(bounds.x, bounds.y);
+        if (Capture.offsetx == -1 & Capture.offsety == -1) {
+            // TODO: 2019/5/7 第二次选取有可能会取消操作，所以，那边还需要做判断,取消判断之后的光标位置需要变化
+            return null;
+        }
+        String picparam = "(" + Integer.toString(Capture.offsetx) + "," + Integer.toString(Capture.offsety) + ")";
+        return picparam;
+    }
+
+    /**
+     * 获取当前正在编辑的工程实例
+     *
+     * @return com.intellij.openapi.project.Project 当前正在编辑的工程实例
+     * @author xiaoshihu
+     * @date 2019/5/7 11:51
+     */
     @NotNull
     private Project getProject() {
         Project[] projects = ProjectManager.getInstance().getOpenProjects();

@@ -67,7 +67,7 @@ public class screenshot extends AnAction {
         }
         // 这里表示并没有抓取图片，而是获取了坐标点
         else {
-            if (Capture.offsetx < 0 & Capture.offsety < 0) {
+            if (Capture.offsetx == -1 & Capture.offsety == -1) {
 //                将窗口还原
                 frame.setLocation(bounds.x, bounds.y);
                 return;
