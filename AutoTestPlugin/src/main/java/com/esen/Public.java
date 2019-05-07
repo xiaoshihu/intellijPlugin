@@ -125,6 +125,9 @@ public class Public {
             int sublength = leftTrim(selectedText).length();
             space_num = length - sublength + 4;
         }
+        else {
+            space_num = 4;
+        }
         for (int i = 0; i < space_num; i++) {
             addspace += " ";
         }
