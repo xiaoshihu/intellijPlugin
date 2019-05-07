@@ -13,15 +13,12 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static com.esen.Public.*;
 
-// TODO: 2019/5/7 在点击了按钮之后，按钮会一直处于被选中状态，导致光标不会在editor里面
 
 public class MyToolWindow {
     private JButton skclickButton;
@@ -57,12 +54,16 @@ public class MyToolWindow {
 //        延迟函数绑定的监听事件
         delayButton.addActionListener(e -> setdelay());
 //        拖拽的插入内容好像不一样
+        // TODO: 2019/5/7 下面三个需要根据参数调整光标位置和选中的内容
         skdragDropButton.addActionListener(e -> drag("self.skdragDrop"));
         skdragDropByoffButton.addActionListener(e -> dragoff("self.skdragDropByoff"));
         skwheelButton.addActionListener(e -> wheel("self.skwheel"));
+
         skfindButton.addActionListener(e -> base("self.skfind"));
         existsButton.addActionListener(e -> base_if("self.skexists"));
         skwaitVanishButton.addActionListener(e -> base_if("self.skwaitVanish"));
+
+        // TODO: 2019/5/7 下面两个也需要根据不同的参数，调整光标的位置和选中内容
         skpasteButton.addActionListener(e -> paste("self.skpaste"));
         typeButton.addActionListener(e -> type("self.sktype"));
     }
@@ -109,6 +110,7 @@ public class MyToolWindow {
         frame.setLocation(bounds.x, bounds.y);
         if (Capture.pickedImage != null) {
             VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
+            assert file != null;
             String filePath = file.getPath();
             Path FilePath = Paths.get(filePath);
             Path moudelPath = FilePath.getParent().getParent();
@@ -172,6 +174,7 @@ public class MyToolWindow {
         frame.setLocation(bounds.x, bounds.y);
         if (Capture.pickedImage != null) {
             VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
+            assert file != null;
             String filePath = file.getPath();
             Path FilePath = Paths.get(filePath);
             Path moudelPath = FilePath.getParent().getParent();
@@ -242,6 +245,7 @@ public class MyToolWindow {
         frame.setLocation(bounds.x, bounds.y);
         if (Capture.pickedImage != null) {
             VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
+            assert file != null;
             String filePath = file.getPath();
             Path FilePath = Paths.get(filePath);
             Path moudelPath = FilePath.getParent().getParent();
@@ -324,6 +328,7 @@ public class MyToolWindow {
         frame.setLocation(bounds.x, bounds.y);
         if (Capture.pickedImage != null) {
             VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
+            assert file != null;
             String filePath = file.getPath();
             Path FilePath = Paths.get(filePath);
             Path moudelPath = FilePath.getParent().getParent();
@@ -406,6 +411,7 @@ public class MyToolWindow {
         frame.setLocation(bounds.x, bounds.y);
         if (Capture.pickedImage != null) {
             VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
+            assert file != null;
             String filePath = file.getPath();
             Path FilePath = Paths.get(filePath);
             Path moudelPath = FilePath.getParent().getParent();
@@ -487,6 +493,7 @@ public class MyToolWindow {
         frame.setLocation(bounds.x, bounds.y);
         if (Capture.pickedImage != null) {
             VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
+            assert file != null;
             String filePath = file.getPath();
             Path FilePath = Paths.get(filePath);
             Path moudelPath = FilePath.getParent().getParent();
@@ -555,6 +562,7 @@ public class MyToolWindow {
         frame.setLocation(bounds.x, bounds.y);
         if (Capture.pickedImage != null) {
             VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
+            assert file != null;
             String filePath = file.getPath();
             Path FilePath = Paths.get(filePath);
             Path moudelPath = FilePath.getParent().getParent();
@@ -620,6 +628,7 @@ public class MyToolWindow {
         frame.setLocation(bounds.x, bounds.y);
         if (Capture.pickedImage != null) {
             VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
+            assert file != null;
             String filePath = file.getPath();
             Path FilePath = Paths.get(filePath);
             Path moudelPath = FilePath.getParent().getParent();
