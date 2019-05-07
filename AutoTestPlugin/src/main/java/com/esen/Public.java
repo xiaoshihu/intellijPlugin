@@ -49,7 +49,6 @@ public class Public {
      * @date 2019/5/6 10:23
      */
     public static void re_insertdoc(Project project, Editor editor, String insertname) {
-        // TODO: 2019/5/6 仅仅偏移好像行不通，需要真实的输入一些东西，我先看看获取startline是什么
         Document document = editor.getDocument();
         CaretModel caretModel = editor.getCaretModel();
 //        获取当前光标的位置，看这里怎么实现获取这行的缩进
@@ -67,7 +66,6 @@ public class Public {
         int space_num = 0;
         String addspace = "";
         if (selectedText != null) {
-            // TODO: 2019/5/7 这里可不可能发生风险？
 //            去除选中字符串的首尾之后，对长度进行比较，然后获取前面空格的数量
             int length = selectedText.length();
             int sublength = leftTrim(selectedText).length();
@@ -101,7 +99,6 @@ public class Public {
      * @date 2019/5/6 10:23
      */
     public static void if_insertdoc(Project project, Editor editor, String insertname) {
-        // TODO: 2019/5/6 仅仅偏移好像行不通，需要真实的输入一些东西，我先看看获取startline是什么
         Document document = editor.getDocument();
         CaretModel caretModel = editor.getCaretModel();
 //        获取当前光标的位置，看这里怎么实现获取这行的缩进
@@ -119,7 +116,6 @@ public class Public {
         int space_num = 0;
         String addspace = "";
         if (selectedText != null) {
-            // TODO: 2019/5/7 这里可不可能发生风险？
 //            去除选中字符串的首尾之后，对长度进行比较，然后获取前面空格的数量
             int length = selectedText.length();
             int sublength = leftTrim(selectedText).length();
@@ -225,8 +221,6 @@ public class Public {
                     } else {
                         insertname = "(\"" + picname + "\"," + "(" + Integer.toString(Capture.offsetx) + "," + Integer.toString(Capture.offsety) + "))";
                     }
-                    // TODO: 2019/5/6 感觉这里还是没有拆分好，这个函数的作用应该仅仅返回需要写入的内容，现在这个里面的东西太多了
-//                    insertdoc(project, editor, insertname);
                     return insertname;
                 } else {
                     return null;

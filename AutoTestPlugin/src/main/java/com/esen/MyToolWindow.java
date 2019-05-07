@@ -206,8 +206,6 @@ public class MyToolWindow {
      * @author xiaoshihu
      * @date 2019/5/7 15:13
      */
-    // TODO: 2019/5/7 我希望的功能是在点击之后，首先插入的内容是函数加上需要拖拽的图片，然后再自动重新截取第二张图
-    // 这个方法在点击按钮之后会自动调用
     public void drag(String funcname) {
 //        获取当前的project
         Project project = getProject();
@@ -335,8 +333,6 @@ public class MyToolWindow {
             try {
 //                获取截图产生的参数，然后，再与传递进来的内容合并成需要插入的内容
                 String picparam = getinsertname(project, editor, moudelPath);
-                // TODO: 2019/5/7 感觉还是需要做不少的东西，需要在屏幕上显示之前需要操作的点的位置，用十字架标记出来，
-                //  并且鼠标在屏幕上的移动，都会显示相对这个点的偏移，估计还需要修改之前捕捉屏幕的方法
                 String picparam2 = get_offset(project, editor);
                 String insertstring = null;
                 if (picparam2 != null) {
