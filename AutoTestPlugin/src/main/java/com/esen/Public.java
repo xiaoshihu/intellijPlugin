@@ -9,6 +9,8 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Public {
 
@@ -74,18 +76,55 @@ public class Public {
         for (int i = 0; i < space_num; i++) {
             addspace += " ";
         }
-
         String insert = insertname + "\n" + addspace;
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                document.insertString(offset, insert);
-            }
-        };
+
+        String reg = "(?<=(\\,\\s))填入参数(?=(\\s*?\\)))";
+        Pattern r = Pattern.compile(reg);
+        Matcher m = r.matcher(insert);
+
+        if (m.find()) {
+            String group = m.group();
+            int index = insert.indexOf(group);
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    document.insertString(offset, insert);
+                }
+            };
 //        执行写入内容的操作
-        WriteCommandAction.runWriteCommandAction(project, runnable);
-        caretModel.moveToOffset(offset + insert.length());
-        selectionModel.setSelection(offset, offset + insert.length());
+            WriteCommandAction.runWriteCommandAction(project, runnable);
+            caretModel.moveToOffset(offset + index + group.length());
+            selectionModel.setSelection(offset + index, offset + index + group.length());
+        } else {
+            String reg1 = "(?<=(\\,\\ssteps=)).*?(?=(\\s*?\\)))";
+            Pattern r1 = Pattern.compile(reg1);
+            Matcher m1 = r1.matcher(insert);
+            if (m1.find()) {
+                String group = m1.group();
+                int index = insert.indexOf(group);
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        document.insertString(offset, insert);
+                    }
+                };
+//        执行写入内容的操作
+                WriteCommandAction.runWriteCommandAction(project, runnable);
+                caretModel.moveToOffset(offset + index + group.length());
+                selectionModel.setSelection(offset + index + 1, offset + index + group.length());
+            } else {
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        document.insertString(offset, insert);
+                    }
+                };
+//        执行写入内容的操作
+                WriteCommandAction.runWriteCommandAction(project, runnable);
+                caretModel.moveToOffset(offset + insert.length());
+                selectionModel.setSelection(offset, offset + insert.length());
+            }
+        }
     }
 
     /**
@@ -120,8 +159,7 @@ public class Public {
             int length = selectedText.length();
             int sublength = leftTrim(selectedText).length();
             space_num = length - sublength + 4;
-        }
-        else {
+        } else {
             space_num = 4;
         }
         for (int i = 0; i < space_num; i++) {

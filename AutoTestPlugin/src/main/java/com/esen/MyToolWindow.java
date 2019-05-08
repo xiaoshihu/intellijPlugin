@@ -54,7 +54,6 @@ public class MyToolWindow {
 //        延迟函数绑定的监听事件
         delayButton.addActionListener(e -> setdelay());
 //        拖拽的插入内容好像不一样
-        // TODO: 2019/5/7 下面三个需要根据参数调整光标位置和选中的内容
         skdragDropButton.addActionListener(e -> drag("self.skdragDrop"));
         skdragDropByoffButton.addActionListener(e -> dragoff("self.skdragDropByoff"));
         skwheelButton.addActionListener(e -> wheel("self.skwheel"));
@@ -63,7 +62,6 @@ public class MyToolWindow {
         existsButton.addActionListener(e -> base_if("self.skexists"));
         skwaitVanishButton.addActionListener(e -> base_if("self.skwaitVanish"));
 
-        // TODO: 2019/5/7 下面两个也需要根据不同的参数，调整光标的位置和选中内容
         skpasteButton.addActionListener(e -> paste("self.skpaste"));
         typeButton.addActionListener(e -> type("self.sktype"));
     }
@@ -117,7 +115,6 @@ public class MyToolWindow {
             try {
 //                获取截图产生的参数，然后，再与传递进来的内容合并成需要插入的内容
                 String picparam = getinsertname(project, editor, moudelPath);
-                // TODO: 2019/5/6 这里需要重新组织，看需要写入上面内容，并且，估计还需要调整光标的位置
                 String insertstring = funcname + "(" + picparam + ")";
                 re_insertdoc(project, editor, insertstring);
             } catch (IOException e) {
@@ -181,7 +178,6 @@ public class MyToolWindow {
             try {
 //                获取截图产生的参数，然后，再与传递进来的内容合并成需要插入的内容
                 String picparam = getinsertname(project, editor, moudelPath);
-                // TODO: 2019/5/6 这里需要重新组织，看需要写入上面内容，并且，估计还需要调整光标的位置
                 String insertstring = "if " + funcname + "(" + picparam + "):";
                 if_insertdoc(project, editor, insertstring);
             } catch (IOException e) {
@@ -636,7 +632,6 @@ public class MyToolWindow {
             try {
 //                获取截图产生的参数，然后，再与传递进来的内容合并成需要插入的内容
                 String picparam = getinsertname(project, editor, moudelPath);
-                // TODO: 2019/5/6 这里需要重新组织，看需要写入上面内容，并且，估计还需要调整光标的位置
                 return picparam;
             } catch (IOException e) {
                 Messages.showErrorDialog(project, "保存图片失败!", "Error");
@@ -646,7 +641,6 @@ public class MyToolWindow {
         // 这里表示并没有抓取图片，而是获取了坐标点
         else {
             if (Capture.offsetx == -1 & Capture.offsety == -1) {
-                // TODO: 2019/5/7 第二次选取有可能会取消操作，所以，那边还需要做判断,取消判断之后的光标位置需要变化
                 return null;
             }
             String picparam = "(" + Integer.toString(Capture.offsetx) + "," + Integer.toString(Capture.offsety) + ")";
@@ -700,7 +694,6 @@ public class MyToolWindow {
         }
         frame.setLocation(bounds.x, bounds.y);
         if (Capture.offsetx == -1 & Capture.offsety == -1) {
-            // TODO: 2019/5/7 第二次选取有可能会取消操作，所以，那边还需要做判断,取消判断之后的光标位置需要变化
             return null;
         }
         String picparam = "(" + Integer.toString(Capture.offsetx) + "," + Integer.toString(Capture.offsety) + ")";
