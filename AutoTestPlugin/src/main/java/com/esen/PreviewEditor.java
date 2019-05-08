@@ -16,6 +16,8 @@
 //
 //import java.lang.reflect.Constructor;
 //
+// TODO: 2019/5/8 等待实现，效果是拆分当前编辑器，在右边显示渲染之后的脚本，将脚本转变为html格式
+
 //public class PreviewEditor implements FileEditorProvider, PossiblyDumbAware {
 ////    private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(MultiMarkdownFxPreviewEditorProvider.class);
 //
