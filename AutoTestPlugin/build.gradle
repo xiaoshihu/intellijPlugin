@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'com.esen'
-version '1.6_dev'
+version '2.0_dev'
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
