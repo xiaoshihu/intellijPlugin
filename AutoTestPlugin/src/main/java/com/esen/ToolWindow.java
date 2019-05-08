@@ -17,6 +17,7 @@ public class ToolWindow implements ToolWindowFactory {
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull com.intellij.openapi.wm.ToolWindow toolWindow) {
 
+//        这里的结构还是没有想清楚，再看看intellij上面的说法
 //        生成组件对象的实例，这里的用法应该是固定的，就不用多管了，主要的放在gui组件的事件上面
         MyToolWindow myToolWindow = new MyToolWindow(toolWindow);
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();

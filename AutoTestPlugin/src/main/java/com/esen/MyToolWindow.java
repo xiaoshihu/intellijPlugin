@@ -615,6 +615,11 @@ public class MyToolWindow {
             }
         }
         try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        try {
             // 开始捕捉屏幕
             assert test != null;
             test.captureRectangle();
@@ -680,6 +685,11 @@ public class MyToolWindow {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         try {
             // 开始捕捉屏幕
