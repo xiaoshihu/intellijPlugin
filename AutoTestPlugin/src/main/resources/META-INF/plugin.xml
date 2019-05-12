@@ -15,6 +15,8 @@
         <!-- Add your extensions here -->
         <toolWindow id="AutoTestTool" anchor="left" icon="AllIcons.Toolwindows.ToolWindowFavorites" secondary="true"
                     factoryClass="com.esen.ToolWindow"/>
+        <toolWindow id="CodePreview" anchor="right" icon="AllIcons.Toolwindows.ToolWindowFavorites" secondary="false"
+                    factoryClass="com.esen.CodePreviewProvider"/>
     </extensions>
 
     <actions>
@@ -34,7 +36,6 @@
             <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="org.esen.autotest.actions.showpic"/>
             <action class="com.esen.rename" id="org.esen.autotest.actions.rename" text="RenamePicture" description="Rename screenshot"> </action>
             <action class="com.esen.deletepic" id="org.esen.autotest.actions.deletepic" text="DeletePicture" description="Delete screenshot"> </action>
-            <action class="com.esen.split" id="org.esen.autotest.actions.split" text="SplitWindows" description="SplitWindows"> </action>
         </group>
     </actions>
 </idea-plugin>
