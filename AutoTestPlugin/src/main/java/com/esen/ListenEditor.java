@@ -20,11 +20,15 @@ public class ListenEditor implements Runnable {
     public void run() {
         // TODO: 2019/5/13 if the panel is visible,loop start?And should i check the status per 0.1s?
         //  because this is driver by the status.
+        // TODO: 2019/5/13 mabey i make a mistake,intellij has provide a listen about editor,so l don't need
+        //  writer a thread to deal the change of editor
 
             if (iseditorPanelvisible()){
+                System.out.println("in thread");
                 showcontent();
             }
             else {
+                System.out.println("in visible");
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
@@ -361,7 +365,7 @@ public class ListenEditor implements Runnable {
     }
 
     private Boolean iseditorPanelvisible(){
-        return editorPane1.isDisplayable();
+        return editorPane1.isValid();
     }
 
     public static ListenEditor getgetInstance(Project project, JEditorPane editorPane1) {
