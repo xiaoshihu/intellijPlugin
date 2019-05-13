@@ -1,5 +1,6 @@
 package com.esen;
 
+import com.intellij.openapi.editor.CaretModel;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
@@ -63,12 +64,17 @@ public class CodePreview implements HyperlinkListener {
                         System.out.println("panel:hshow");
                         // TODO: 2019/5/13 creat listen instance
                         AmazingDocumentListener amazingDocumentListener = new AmazingDocumentListener(project);
+                        AmazingCaretListener amazingCaretListener = new AmazingCaretListener();
                         Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
                         if (editor != null) {
                             Document document = editor.getDocument();
                             // TODO: 2019/5/13 add doc listen into document instance
                             // TODO: 2019/5/13 other thing should implement in listen
                             document.addDocumentListener(amazingDocumentListener);
+
+                            CaretModel caretModel = editor.getCaretModel();
+                            // TODO: 2019/5/13 add caret listen
+                            caretModel.addCaretListener(amazingCaretListener);
 
                         }
                     } else {
