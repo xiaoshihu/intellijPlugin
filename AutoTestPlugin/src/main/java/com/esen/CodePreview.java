@@ -40,6 +40,7 @@ public class CodePreview implements HyperlinkListener {
     // TODO: 2019/5/13 this var should be spared to other thread?
     private JEditorPane editorPane1;
     private JPanel panel1;
+    private JScrollPane scrollpane;
 
     public CodePreview(ToolWindow toolWindow, Project project) {
         // TODO: 2019/5/11 this method while be invoked when i open a project,therefore should check editor first,
@@ -51,6 +52,9 @@ public class CodePreview implements HyperlinkListener {
         // TODO: 2019/5/13 creat a new thread
 
         // TODO: 2019/5/13 should i listen the toolwindow,if the component is visibale,then listen the editor.
+//        scrollpane.getHorizontalScrollBar()
+        editorPane1.setEditable(false);
+        editorPane1.setContentType("text/html;charset=utf-8");
 
         editorPane1.addHierarchyListener(new HierarchyListener() {
             // TODO: 2019/5/13 listen just like a event driver,so i can set other listen in listen.
@@ -62,13 +66,20 @@ public class CodePreview implements HyperlinkListener {
                         // TODO: 2019/5/13 i need add listen in this,the mothod will be block,so i needn't writer by myself
 //                        System.out.println(panel.getBounds());
                         System.out.println("panel:hshow");
-                        // TODO: 2019/5/13 creat listen instance
-                        AmazingDocumentListener amazingDocumentListener = new AmazingDocumentListener(project);
-                        AmazingCaretListener amazingCaretListener = new AmazingCaretListener();
                         Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
+
+                        // TODO: 2019/5/13 creat listen instance
+                        AmazingDocumentListener amazingDocumentListener = new AmazingDocumentListener(editor,editorPane1,scrollpane);
+                        AmazingCaretListener amazingCaretListener = new AmazingCaretListener(editorPane1);
+
                         if (editor != null) {
                             Document document = editor.getDocument();
+                            String text = document.getText();
+                            // TODO: 2019/5/13 last thging i should do is deal the text i got
+//                            editorPane1.setText(text);
+//                            editorPane1.repaint();
                             // TODO: 2019/5/13 add doc listen into document instance
+
                             // TODO: 2019/5/13 other thing should implement in listen
                             document.addDocumentListener(amazingDocumentListener);
 
