@@ -41,7 +41,7 @@
                   <horizontalTextPosition value="11"/>
                   <requestFocusEnabled value="false"/>
                   <selected value="false"/>
-                  <text value="click(target: Union[Tuple, str, Match])"/>
+                  <text value="click(target)"/>
                   <toolTipText value="点击截取图片中心点（相对中心点的偏移）或者指定的坐标"/>
                   <verticalAlignment value="0"/>
                 </properties>
@@ -60,7 +60,7 @@
                   <horizontalTextPosition value="11"/>
                   <requestFocusEnabled value="false"/>
                   <selected value="false"/>
-                  <text value="doubleclick(target: Union[Tuple, str, Match])"/>
+                  <text value="doubleclick(target)"/>
                   <toolTipText value="双击截取图片中心点（相对中心点的偏移）或者指定的坐标"/>
                   <verticalAlignment value="0"/>
                 </properties>
@@ -79,7 +79,7 @@
                   <horizontalTextPosition value="11"/>
                   <requestFocusEnabled value="false"/>
                   <selected value="false"/>
-                  <text value="rightClick(target: Union[Tuple, str, Match])"/>
+                  <text value="rightClick(target)"/>
                   <toolTipText value="右键点击截取图片中心点（相对中心点的偏移）或者指定的坐标"/>
                   <verticalAlignment value="0"/>
                 </properties>
@@ -98,7 +98,7 @@
                   <horizontalTextPosition value="11"/>
                   <requestFocusEnabled value="false"/>
                   <selected value="false"/>
-                  <text value="hover(target: Union[Tuple, str, Match])"/>
+                  <text value="hover(target)"/>
                   <toolTipText value="移动鼠标到截取图片中心点（相对中心点的偏移）或者指定的坐标"/>
                   <verticalAlignment value="0"/>
                 </properties>
@@ -155,7 +155,7 @@
                   <horizontalTextPosition value="11"/>
                   <requestFocusEnabled value="false"/>
                   <selected value="false"/>
-                  <text value="wheel(target: Union[Tuple, str, Match], steps=-100)"/>
+                  <text value="wheel(target, steps=-100)"/>
                   <toolTipText value="移动鼠标到图片或坐标后模拟鼠标滚轮事件，step为滚动的距离"/>
                   <verticalAlignment value="0"/>
                 </properties>
@@ -198,7 +198,7 @@
                   <horizontalTextPosition value="11"/>
                   <requestFocusEnabled value="false"/>
                   <selected value="false"/>
-                  <text value="type(target: Union[Tuple, str, Match])"/>
+                  <text value="type(target)"/>
                   <toolTipText value="点击图片或坐标后在当前光标处模拟键盘输入，不要输入中文，可以输入按键和组合键"/>
                   <verticalAlignment value="0"/>
                 </properties>
@@ -217,7 +217,7 @@
                   <horizontalTextPosition value="11"/>
                   <requestFocusEnabled value="false"/>
                   <selected value="false"/>
-                  <text value="paste(target: Union[Tuple, str, Match])"/>
+                  <text value="paste(target)"/>
                   <toolTipText value="点击图片或坐标后将字符串粘贴到当前光标处"/>
                   <verticalAlignment value="0"/>
                 </properties>
@@ -258,7 +258,7 @@
                   <horizontalTextPosition value="11"/>
                   <requestFocusEnabled value="false"/>
                   <selected value="false"/>
-                  <text value="find(target: Union[Tuple, str])"/>
+                  <text value="find(target)"/>
                   <toolTipText value="在当前屏幕上查找截取的图片，返回找到图片位置"/>
                   <verticalAlignment value="0"/>
                 </properties>
@@ -277,7 +277,7 @@
                   <horizontalTextPosition value="11"/>
                   <requestFocusEnabled value="false"/>
                   <selected value="false"/>
-                  <text value="exists(target: str)"/>
+                  <text value="exists(target)"/>
                   <toolTipText value="判断图片是否出现在当前屏幕上"/>
                   <verticalAlignment value="0"/>
                 </properties>

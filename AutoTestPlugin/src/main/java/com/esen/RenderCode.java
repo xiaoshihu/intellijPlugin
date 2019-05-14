@@ -1,7 +1,11 @@
 package com.esen;
 
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RenderCode {
 
@@ -10,7 +14,7 @@ public class RenderCode {
             "   <head>\n" +
             "      <style type=\"text/css\">\n" +
             "         .sikuli-code {\n" +
-            "            font-size: 20px;\n" +
+            "            font-size: 16px;\n" +
             "            font-family: \"Osaka-mono\", Monospace;\n" +
             "            line-height: 1.5em;\n" +
             "            display:table-cell;\n" +
@@ -72,7 +76,7 @@ public class RenderCode {
             "\n" +
             "      </style>\n" +
             "   </head>\n" +
-            "<body>\n"+
+            "<body>\n" +
             "   <pre class=\"sikuli-code\">\n";
 
     private String tail = "</pre>\n" +
@@ -81,8 +85,18 @@ public class RenderCode {
             "\n" +
             "</html>";
 
+    // TODO: 2019/5/14 only render keyword and key param,because they have a png param which it is the purpose of this func.
+    final private String[] keywords = new String[]{"skfind", "skclick", "skdoubleclick", "skrightClick", "skmouseDown",
+            "skhover", "skexists", "skwaitVanish", "skwheel", "skdragDrop", "skdragDropByoff", "sktype", "skpaste"};
+
+    private Path path;
+
+    public RenderCode(Path path) {
+        this.path = path;
+    }
+
     // TODO: 2019/5/13 how should i deal with the text?
-    public String RenderCode(String text) {
+    public String Render(String text) {
         String[] strings = text.split("\n");
         // TODO: 2019/5/13 in java a list is diffcult to use
 //        List<String> list = new LinkedList<String>();
@@ -99,15 +113,54 @@ public class RenderCode {
                 String rendertext = "\n" + addspace + head + line.trim() + end + "\n";
                 renderstrings.append(rendertext);
             } else {
-                String head = "<span class=\"cmt\">";
-                String end = "</span>";
-                String rendertext = "\n" + addspace + head + line.trim() + end + "\n";
-                renderstrings.append(rendertext);
-//                renderstrings.append(line);
+
+                // TODO: 2019/5/14 need judge the line content and deal the different condition
+                String func = line.split("\\(", 2)[0];
+                String funcres = dealfunc(func);
+
+
+                String paramres = "";
+                // TODO: 2019/5/14 get param,and add img label
+                String reg = "\\(.*\\)";
+                Pattern r = Pattern.compile(reg);
+                Matcher m = r.matcher(line);
+
+                // TODO: 2019/5/14
+                if (m.find()) {
+                    String param = m.group();
+                    paramres = dealparam(param);
+                }
+                // TODO: 2019/5/14
+                renderstrings.append(funcres + paramres + "\n");
             }
         }
         renderstrings.append(tail);
         return renderstrings.toString();
+    }
+
+    private String dealfunc(String func) {
+//        String reg = "(?<=\\([\\\"\\']).*?\\.png(?=[\\\"\\'])";
+//        Pattern r = Pattern.compile(reg);
+//        Matcher m = r.matcher(line);
+
+        return func;
+    }
+
+    private String dealparam(String param) {
+
+        List<String> matchers = getMatchers("(?<=\\([\\\"\\']).*?\\.png(?=[\\\"\\'])", param);
+        if (matchers.size() != 0){
+            for (String ele:matchers){
+                String path_res = path.resolve(ele).toString().replaceAll("\\\\","\\\\\\\\");
+                String newparam = "<img src=\"" + path_res + "\" />";
+                param = param.replaceAll(ele, newparam);
+            }
+            return param;
+        }
+        else {
+            return param;
+        }
+
     }
 
     // TODO: 2019/5/13 add space of editor
@@ -143,5 +196,15 @@ public class RenderCode {
         } else {
             return str.replaceAll("^[　 ]+|[　 ]+$", "");
         }
+    }
+
+    List<String> getMatchers(String regex, String source) {
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(source);
+        List<String> list = new ArrayList<>();
+        while (matcher.find()) {
+            list.add(matcher.group());
+        }
+        return list;
     }
 }

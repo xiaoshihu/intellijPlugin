@@ -3,9 +3,11 @@ package com.esen;
 import com.intellij.openapi.editor.CaretModel;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 
 import javax.swing.*;
@@ -15,6 +17,8 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Thing list need to do：
@@ -68,12 +72,24 @@ public class CodePreview implements HyperlinkListener {
                         System.out.println("panel:hshow");
                         Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
 
-                        // TODO: 2019/5/13 creat listen instance
-                        AmazingDocumentListener amazingDocumentListener = new AmazingDocumentListener(editor,editorPane1,scrollpane);
-                        AmazingCaretListener amazingCaretListener = new AmazingCaretListener(editorPane1);
+
 
                         if (editor != null) {
                             Document document = editor.getDocument();
+
+                            VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
+                            String filePath = file.getPath();
+                            Path FilePath = Paths.get(filePath);
+                            Path moudelPath = FilePath.getParent().getParent();
+                            String elepath = "元素对象库";
+                            Path datadir = moudelPath.resolve(elepath);
+                            File datapath = new File(datadir.toString());
+                            Path pic = datadir.resolve("pic");
+
+
+                            AmazingDocumentListener amazingDocumentListener = new AmazingDocumentListener(editor,editorPane1,scrollpane,pic);
+                            AmazingCaretListener amazingCaretListener = new AmazingCaretListener(editorPane1);
+
                             String text = document.getText();
                             // TODO: 2019/5/13 last thging i should do is deal the text i got
 //                            editorPane1.setText(text);
@@ -86,6 +102,10 @@ public class CodePreview implements HyperlinkListener {
                             CaretModel caretModel = editor.getCaretModel();
                             // TODO: 2019/5/13 add caret listen
                             caretModel.addCaretListener(amazingCaretListener);
+                            // TODO: 2019/5/14 get the path of script,and get full filepath
+
+                            // TODO: 2019/5/13 creat listen instance
+
 
                         }
                     } else {
