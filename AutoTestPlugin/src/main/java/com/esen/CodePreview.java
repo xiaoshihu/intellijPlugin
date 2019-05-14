@@ -46,34 +46,18 @@ public class CodePreview implements HyperlinkListener {
     private JPanel panel1;
     private JScrollPane scrollpane;
 
-    public CodePreview(ToolWindow toolWindow, Project project) {
-        // TODO: 2019/5/11 this method while be invoked when i open a project,therefore should check editor first,
-        //  if editor is not null,get editor text.
-        // TODO: 2019/5/11 How can i listen display status,because when the toolwindow is not display i do not need listen editor
-
-        // TODO: 2019/5/11 creat a thread listen editor change
-
-        // TODO: 2019/5/13 creat a new thread
-
-        // TODO: 2019/5/13 should i listen the toolwindow,if the component is visibale,then listen the editor.
-//        scrollpane.getHorizontalScrollBar()
+    public CodePreview(ToolWindow toolWindow, Project project) throws IOException {
+        final File htmlFile = File.createTempFile("temp", ".html");
+//        System.out.println("临时文件所在的本地路径：" + htmlFile.getCanonicalPath());
         editorPane1.setEditable(false);
         editorPane1.setContentType("text/html;charset=utf-8");
 
         editorPane1.addHierarchyListener(new HierarchyListener() {
-            // TODO: 2019/5/13 listen just like a event driver,so i can set other listen in listen.
-            //  in lower it should be implemented by multhread.
             @Override
             public void hierarchyChanged(HierarchyEvent e) {
                 if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
                     if (e.getComponent().isShowing()) {
-                        // TODO: 2019/5/13 i need add listen in this,the mothod will be block,so i needn't writer by myself
-//                        System.out.println(panel.getBounds());
-                        System.out.println("panel:hshow");
                         Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
-
-
-
                         if (editor != null) {
                             Document document = editor.getDocument();
 
@@ -83,33 +67,23 @@ public class CodePreview implements HyperlinkListener {
                             Path moudelPath = FilePath.getParent().getParent();
                             String elepath = "元素对象库";
                             Path datadir = moudelPath.resolve(elepath);
-                            File datapath = new File(datadir.toString());
                             Path pic = datadir.resolve("pic");
 
-
-                            AmazingDocumentListener amazingDocumentListener = new AmazingDocumentListener(editor,editorPane1,scrollpane,pic);
-                            AmazingCaretListener amazingCaretListener = new AmazingCaretListener(editorPane1);
+                            AmazingDocumentListener amazingDocumentListener = new AmazingDocumentListener(editor,editorPane1,scrollpane,pic,htmlFile);
+                            // TODO: 2019/5/14 i think too lot
+                            AmazingCaretListener amazingCaretListener = new AmazingCaretListener(editor,scrollpane);
 
                             String text = document.getText();
-                            // TODO: 2019/5/13 last thging i should do is deal the text i got
-//                            editorPane1.setText(text);
-//                            editorPane1.repaint();
-                            // TODO: 2019/5/13 add doc listen into document instance
-
-                            // TODO: 2019/5/13 other thing should implement in listen
+                            RenderCode renderCode = new RenderCode(pic);
+                            String text_res = renderCode.Render(text);
+                            editorPane1.setText(text_res);
+                            editorPane1.repaint();
                             document.addDocumentListener(amazingDocumentListener);
-
                             CaretModel caretModel = editor.getCaretModel();
-                            // TODO: 2019/5/13 add caret listen
                             caretModel.addCaretListener(amazingCaretListener);
-                            // TODO: 2019/5/14 get the path of script,and get full filepath
-
-                            // TODO: 2019/5/13 creat listen instance
-
-
                         }
                     } else {
-                        System.out.println("panel:hhide");
+//                        System.out.println("panel:hhide");
                     }
                 }
             }

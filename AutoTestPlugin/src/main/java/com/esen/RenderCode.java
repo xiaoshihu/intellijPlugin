@@ -2,7 +2,6 @@ package com.esen;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,7 +13,7 @@ public class RenderCode {
             "   <head>\n" +
             "      <style type=\"text/css\">\n" +
             "         .sikuli-code {\n" +
-            "            font-size: 16px;\n" +
+            "            font-size: 14px;\n" +
             "            font-family: \"Osaka-mono\", Monospace;\n" +
             "            line-height: 1.5em;\n" +
             "            display:table-cell;\n" +
@@ -27,16 +26,19 @@ public class RenderCode {
             "         }\n" +
             "         .sikuli-code img {\n" +
             "            vertical-align: middle;\n" +
-            "            margin: 2px;\n" +
-            "            border: 1px solid #ccc;\n" +
-            "            padding: 2px;\n" +
-            "            -moz-border-radius: 5px;\n" +
-            "            -webkit-border-radius: 5px;\n" +
-            "            -moz-box-shadow: 1px 1px 1px gray;\n" +
-            "            -webkit-box-shadow: 1px 1px 2px gray;\n" +
+//            "            margin: 2px;\n" +
+//            "            border: 1px solid #ccc;\n" +
+//            "            padding: 2px;\n" +
+            "            border-style:solid;\n" +
+            "            border-color:#98bf21;\n" +
+            "            border-width:10px;\n" +
+//            "            -moz-border-radius: 5px;\n" +
+//            "            -webkit-border-radius: 5px;\n" +
+//            "            -moz-box-shadow: 1px 1px 1px gray;\n" +
+//            "            -webkit-box-shadow: 1px 1px 2px gray;\n" +
             "         }\n" +
             "         .kw {\n" +
-            "            color: blue;\n" +
+            "            color: white;\n" +
             "         }\n" +
             "         .skw {\n" +
             "            color: rgb(63, 127, 127);\n" +
@@ -98,41 +100,36 @@ public class RenderCode {
     // TODO: 2019/5/13 how should i deal with the text?
     public String Render(String text) {
         String[] strings = text.split("\n");
-        // TODO: 2019/5/13 in java a list is diffcult to use
-//        List<String> list = new LinkedList<String>();
         StringBuilder renderstrings = new StringBuilder();
         renderstrings.append(header);
+        int i = 1;
         for (String line : strings) {
+//            System.out.println(i);
+            String s = Integer.toString(i);
+//            System.out.println(s);
             String leftline = leftTrim(line);
             int space_num = line.length() - leftline.length();
             String addspace = addSpace(space_num, "");
-
             if (leftline.startsWith("#")) {
                 String head = "<span class=\"cmt\">";
                 String end = "</span>";
-                String rendertext = "\n" + addspace + head + line.trim() + end + "\n";
+                String rendertext = "<span style=\"background-color: #000000;\"class=\"kw\"> " + "#" + s + "</span>" + addspace + head + line.trim() + end + "\n";
                 renderstrings.append(rendertext);
             } else {
-
-                // TODO: 2019/5/14 need judge the line content and deal the different condition
                 String func = line.split("\\(", 2)[0];
                 String funcres = dealfunc(func);
 
-
                 String paramres = "";
-                // TODO: 2019/5/14 get param,and add img label
                 String reg = "\\(.*\\)";
                 Pattern r = Pattern.compile(reg);
                 Matcher m = r.matcher(line);
-
-                // TODO: 2019/5/14
                 if (m.find()) {
                     String param = m.group();
                     paramres = dealparam(param);
                 }
-                // TODO: 2019/5/14
-                renderstrings.append(funcres + paramres + "\n");
+                renderstrings.append("<span style=\"background-color: #000000;\"class=\"kw\"> " + "#" + s + "</span>" + addspace + funcres + paramres + "\n");
             }
+            i = i + 1;
         }
         renderstrings.append(tail);
         return renderstrings.toString();
@@ -148,16 +145,15 @@ public class RenderCode {
 
     private String dealparam(String param) {
 
-        List<String> matchers = getMatchers("(?<=\\([\\\"\\']).*?\\.png(?=[\\\"\\'])", param);
-        if (matchers.size() != 0){
-            for (String ele:matchers){
-                String path_res = path.resolve(ele).toString().replaceAll("\\\\","\\\\\\\\");
-                String newparam = "<img src=\"" + path_res + "\" />";
+        List<String> matchers = getMatchers("(?<=[\\\"\\'])\\w*?-*\\w*?\\.png(?=[\\\"\\'])", param);
+        if (matchers.size() != 0) {
+            for (String ele : matchers) {
+                String path_res = path.resolve(ele).toString().replaceAll("\\\\", "/");
+                String newparam = "<img src=\"" + "file:/" + path_res + "\" alt=\"截图不存在\"/>";
                 param = param.replaceAll(ele, newparam);
             }
             return param;
-        }
-        else {
+        } else {
             return param;
         }
 
