@@ -144,8 +144,8 @@ public class RenderCode {
     }
 
     private String dealparam(String param) {
-
-        List<String> matchers = getMatchers("(?<=[\\\"\\'])\\w*?-*\\w*?\\.png(?=[\\\"\\'])", param);
+        // TODO: 2019/5/20 not support chinses
+        List<String> matchers = getMatchers("(?<=[\\\"\\'])[\\u4E00-\\u9FA5A-Za-z0-9_-]+?\\.png(?=[\\\"\\'])", param);
         if (matchers.size() != 0) {
             for (String ele : matchers) {
                 String path_res = path.resolve(ele).toString().replaceAll("\\\\", "/");

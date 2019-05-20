@@ -58,6 +58,6 @@ public class AmazingDocumentListener implements DocumentListener {
                 scrollpane.getViewport().setViewPosition(viewPosition);
             }
         });
-        System.out.println(viewPosition.toString());
+//        System.out.println(viewPosition.toString());
     }
 }

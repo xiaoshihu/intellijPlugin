@@ -45,6 +45,7 @@ public class CodePreview implements HyperlinkListener {
     private JEditorPane editorPane1;
     private JPanel panel1;
     private JScrollPane scrollpane;
+    private AmazingDocumentListener listener;
 
     public CodePreview(ToolWindow toolWindow, Project project) throws IOException {
         final File htmlFile = File.createTempFile("temp", ".html");
@@ -60,7 +61,7 @@ public class CodePreview implements HyperlinkListener {
                         Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
                         if (editor != null) {
                             Document document = editor.getDocument();
-
+//                            System.out.println("CodePreview is shown");
                             VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
                             String filePath = file.getPath();
                             Path FilePath = Paths.get(filePath);
@@ -69,9 +70,10 @@ public class CodePreview implements HyperlinkListener {
                             Path datadir = moudelPath.resolve(elepath);
                             Path pic = datadir.resolve("pic");
 
-                            AmazingDocumentListener amazingDocumentListener = new AmazingDocumentListener(editor,editorPane1,scrollpane,pic,htmlFile);
+                            AmazingDocumentListener amazingDocumentListener = new AmazingDocumentListener(editor, editorPane1, scrollpane, pic, htmlFile);
+                            listener = amazingDocumentListener;
                             // TODO: 2019/5/14 i think too lot
-                            AmazingCaretListener amazingCaretListener = new AmazingCaretListener(editor,scrollpane);
+//                            AmazingCaretListener amazingCaretListener = new AmazingCaretListener(editor,scrollpane);
 
                             String text = document.getText();
                             RenderCode renderCode = new RenderCode(pic);
@@ -79,11 +81,18 @@ public class CodePreview implements HyperlinkListener {
                             editorPane1.setText(text_res);
                             editorPane1.repaint();
                             document.addDocumentListener(amazingDocumentListener);
-                            CaretModel caretModel = editor.getCaretModel();
-                            caretModel.addCaretListener(amazingCaretListener);
+//                            CaretModel caretModel = editor.getCaretModel();
+//                            caretModel.addCaretListener(amazingCaretListener);
                         }
                     } else {
-//                        System.out.println("panel:hhide");
+                        Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
+                        if (editor != null) {
+                            Document document = editor.getDocument();
+                            if (listener != null){
+                                document.removeDocumentListener(listener);
+                            }
+                        }
+//                        System.out.println("CodePreview is hhide");
                     }
                 }
             }
