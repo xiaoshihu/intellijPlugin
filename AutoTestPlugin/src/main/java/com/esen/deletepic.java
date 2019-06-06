@@ -37,7 +37,8 @@ public class deletepic extends AnAction {
 
                     String picname = selectionModel.getSelectedText();
 //                    使用这个正则表达式就能找到想要的字符串了
-                    String reg = "(?<=[\\((\\,\\s*?)])\\s*?\\(s*?\\\"" + picname + "\\.png\\s*?\\\"\\s*?\\,\\s*?\\(.*?\\)\\s*?\\)";
+                    // 更新了不能识别前面是中括号的情况
+                    String reg = "(?<=[\\[\\((\\,\\s*?)])\\s*?\\(s*?\\\"" + picname + "\\.png\\s*?\\\"\\s*?\\,\\s*?\\(.*?\\)\\s*?\\)";
 
                     Pattern r = Pattern.compile(reg);
                     CaretModel caretModel = editor.getCaretModel();
