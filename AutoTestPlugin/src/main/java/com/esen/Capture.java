@@ -6,6 +6,10 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+/**
+ * 插件最核心的功能，即截图操作全部在这里
+ */
+
 public class Capture {
     public static BufferedImage pickedImage;
     public static int offsetx = 0;

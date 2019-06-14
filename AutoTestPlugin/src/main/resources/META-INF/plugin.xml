@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.esen.autotest</id>
     <name>AutoTestTool</name>
-    <vendor email="xiaoshh@esensoft.com" url="http://www.esensoft.com/">EsenSoftware</vendor>
+    <vendor email="xiaoshihu@outlook.com" url="http://www.xxxxx.com/">XXXXSoftware</vendor>
 
     <description>A plugin that makes it easy to capture elements on the screen,in order to achieve the same consequent like Sikuli and Airtest.</description>
 

@@ -18,6 +18,7 @@ import java.nio.file.Paths;
 
 import static com.esen.Public.*;
 
+// TODO: 6/14/2019 功能按键的监听事件
 public class screenshot extends AnAction {
 
     @Override
@@ -33,9 +34,7 @@ public class screenshot extends AnAction {
         } catch (AWTException e) {
             e.printStackTrace();
         }
-        // 将窗口隐藏起来，在这里拆分不是很好写，因为有很多的变量会被拆分
         frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
-
         try {
             assert test != null;
             test.captureRectangle();

@@ -53,12 +53,9 @@ public class Public {
     public static void re_insertdoc(Project project, Editor editor, String insertname) {
         Document document = editor.getDocument();
         CaretModel caretModel = editor.getCaretModel();
-//        获取当前光标的位置，看这里怎么实现获取这行的缩进
         int offset = caretModel.getOffset();
-//        获取当前行的起始位置,目前看来好像并不是的
         LogicalPosition logicalPosition = caretModel.getLogicalPosition();
         int line = logicalPosition.line;
-//        获取指定行的第一个字符串的起始位置，其实就是行的起始位置，我现在需要知道的是第一个不为空格的字符的位置，看样子只能
 //        获取这行的内容，然后对内容进行解析
         int lineStartOffset = document.getLineStartOffset(line);
         SelectionModel selectionModel = editor.getSelectionModel();
@@ -145,7 +142,6 @@ public class Public {
 //        获取当前行的起始位置,目前看来好像并不是的
         LogicalPosition logicalPosition = caretModel.getLogicalPosition();
         int line = logicalPosition.line;
-//        获取指定行的第一个字符串的起始位置，其实就是行的起始位置，我现在需要知道的是第一个不为空格的字符的位置，看样子只能
 //        获取这行的内容，然后对内容进行解析
         int lineStartOffset = document.getLineStartOffset(line);
         SelectionModel selectionModel = editor.getSelectionModel();
@@ -221,7 +217,7 @@ public class Public {
     }
 
     /**
-     * 检查是否有相应的存放路径，并且，将相应的内容写入到编辑器中，改函数仅仅适用于截图方法，按钮触发的方法插入内容
+     * 检查是否有相应的存放路径，并且，将相应的内容写入到编辑器中，该函数仅仅适用于截图方法，按钮触发的方法插入内容
      * 需要重新写方法
      *
      * @param project    当前激活工程的project实例

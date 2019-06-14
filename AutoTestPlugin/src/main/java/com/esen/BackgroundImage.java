@@ -39,8 +39,6 @@ public class BackgroundImage extends JLabel {
         } else {
             if (!getpic) {
                 g.setColor(Color.RED);
-//            g.drawLine(lineX, 0, lineX, getHeight());
-//            g.drawLine(0, lineY, getWidth(), lineY);
 
                 if (w > 0 && h > 0) {
                     g.drawLine(x + (int) w / 2, y + (int) h / 2 - 10, x + (int) w / 2, y + (int) h / 2 + 10);

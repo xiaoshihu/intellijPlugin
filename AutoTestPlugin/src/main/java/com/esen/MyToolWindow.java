@@ -19,7 +19,11 @@ import java.nio.file.Paths;
 
 import static com.esen.Public.*;
 
-
+/**
+ * 填充代码的功能都是在这里实现的
+ * 可以修改这里的代码根据自己的需求填充代码
+ * 但是需要注意的是，有些按钮里面的操作是不同的
+ */
 public class MyToolWindow {
     private JButton skclickButton;
     private JPanel myToolWindowContent;
@@ -47,6 +51,9 @@ public class MyToolWindow {
      * @param toolWindow intellij
      */
     public MyToolWindow(ToolWindow toolWindow) {
+        /**
+         * 下面为每一个按钮组件绑定监听事件
+         */
         skclickButton.addActionListener(e -> base("self.skclick"));
         skdoubleclickButton.addActionListener(e -> base("self.skdoubleclick"));
         skrightClickButton.addActionListener(e -> base("self.skrightClick"));
@@ -74,7 +81,7 @@ public class MyToolWindow {
     public void base(String funcname) {
 //        获取当前的project
         Project project = getProject();
-//        根绝project获取editor
+//        根据project获取editor
         Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
         assert editor != null;
 //        获取pycharm组件的大小和边界
@@ -410,7 +417,6 @@ public class MyToolWindow {
             try {
 //                获取截图产生的参数，然后，再与传递进来的内容合并成需要插入的内容
                 String picparam = getinsertname(project, editor, moudelPath);
-
                 String input = Messages.showInputDialog(project, "请输入粘贴内容：", "Input", Messages.getQuestionIcon());
                 String insertstring = null;
                 if (input != null && !input.equals("")) {
@@ -518,7 +524,6 @@ public class MyToolWindow {
      * @date 2019/5/7 15:16
      */
     public void wheel(String funcname) {
-//        String funcname = "self.base";
 //        获取当前的project
         Project project = getProject();
 //        根绝project获取editor

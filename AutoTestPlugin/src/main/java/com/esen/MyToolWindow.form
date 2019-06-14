@@ -296,7 +296,7 @@
                   <horizontalTextPosition value="11"/>
                   <requestFocusEnabled value="false"/>
                   <selected value="false"/>
-                  <text value="waitVanish(target: str)"/>
+                  <text value="waitVanish(target)"/>
                   <toolTipText value="等待图片在当前屏幕上消失"/>
                   <verticalAlignment value="0"/>
                 </properties>

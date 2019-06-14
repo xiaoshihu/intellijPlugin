@@ -87,7 +87,6 @@ public class RenderCode {
             "\n" +
             "</html>";
 
-    // TODO: 2019/5/14 only render keyword and key param,because they have a png param which it is the purpose of this func.
     final private String[] keywords = new String[]{"skfind", "skclick", "skdoubleclick", "skrightClick", "skmouseDown",
             "skhover", "skexists", "skwaitVanish", "skwheel", "skdragDrop", "skdragDropByoff", "sktype", "skpaste"};
 
@@ -97,16 +96,13 @@ public class RenderCode {
         this.path = path;
     }
 
-    // TODO: 2019/5/13 how should i deal with the text?
     public String Render(String text) {
         String[] strings = text.split("\n");
         StringBuilder renderstrings = new StringBuilder();
         renderstrings.append(header);
         int i = 1;
         for (String line : strings) {
-//            System.out.println(i);
             String s = Integer.toString(i);
-//            System.out.println(s);
             String leftline = leftTrim(line);
             int space_num = line.length() - leftline.length();
             String addspace = addSpace(space_num, "");
@@ -136,15 +132,11 @@ public class RenderCode {
     }
 
     private String dealfunc(String func) {
-//        String reg = "(?<=\\([\\\"\\']).*?\\.png(?=[\\\"\\'])";
-//        Pattern r = Pattern.compile(reg);
-//        Matcher m = r.matcher(line);
-
         return func;
     }
 
     private String dealparam(String param) {
-        // TODO: 2019/5/20 not support chinses
+        // 添加对中文的支持
         List<String> matchers = getMatchers("(?<=[\\\"\\'])[\\u4E00-\\u9FA5A-Za-z0-9_-]+?\\.png(?=[\\\"\\'])", param);
         if (matchers.size() != 0) {
             for (String ele : matchers) {
@@ -159,7 +151,6 @@ public class RenderCode {
 
     }
 
-    // TODO: 2019/5/13 add space of editor
     public String addSpace(int space_num, String addspace) {
         for (int i = 0; i < space_num; i++) {
             addspace += " ";
