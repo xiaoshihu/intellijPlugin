@@ -1,5 +1,3 @@
-
-
-AutoTestPlugin/build/
-AutoTestPlugin/.idea/
-AutoTestPlugin/.gradle/
+.gradle
+.idea
+build
