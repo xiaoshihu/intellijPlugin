@@ -53,7 +53,7 @@ public class screenshot extends AnAction {
             VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
             String filePath = file.getPath();
             Path FilePath = Paths.get(filePath);
-            Path moudelPath = FilePath.getParent().getParent();
+            Path moudelPath = FilePath.getParent();
             try {
                 String insertname = getinsertname(project, editor, moudelPath);
                 if (insertname != null) {

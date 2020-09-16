@@ -44,7 +44,7 @@ public class CodePreview implements HyperlinkListener {
                             VirtualFile file = FileDocumentManager.getInstance().getFile(editor.getDocument());
                             String filePath = file.getPath();
                             Path FilePath = Paths.get(filePath);
-                            Path moudelPath = FilePath.getParent().getParent();
+                            Path moudelPath = FilePath.getParent();
                             String elepath = "元素对象库";
                             Path datadir = moudelPath.resolve(elepath);
                             Path pic = datadir.resolve("pic");
