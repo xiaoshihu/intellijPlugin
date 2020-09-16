@@ -228,7 +228,7 @@ public class Public {
      * @date 2019/5/6 10:29
      */
     public static String getinsertname(Project project, Editor editor, Path moudelPath) throws IOException {
-        String elepath = "元素对象库";
+        String elepath = "ElementObjectRepository";
         Path datadir = moudelPath.resolve(elepath);
         File datapath = new File(datadir.toString());
         if (datapath.exists()) {

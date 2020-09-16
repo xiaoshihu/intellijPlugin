@@ -57,7 +57,7 @@ public class showpic extends AnAction {
         String filePath = file.getPath();
         Path FilePath = Paths.get(filePath);
         Path moudelPath = FilePath.getParent();
-        String elepath = "元素对象库";
+        String elepath = "ElementObjectRepository";
 
         Path datadir = moudelPath.resolve(elepath);
         File datapath = new File(datadir.toString());

@@ -118,7 +118,7 @@ public class MyToolWindow {
             assert file != null;
             String filePath = file.getPath();
             Path FilePath = Paths.get(filePath);
-            Path moudelPath = FilePath.getParent().getParent();
+            Path moudelPath = FilePath.getParent();
             try {
 //                获取截图产生的参数，然后，再与传递进来的内容合并成需要插入的内容
                 String picparam = getinsertname(project, editor, moudelPath);
@@ -181,7 +181,7 @@ public class MyToolWindow {
             assert file != null;
             String filePath = file.getPath();
             Path FilePath = Paths.get(filePath);
-            Path moudelPath = FilePath.getParent().getParent();
+            Path moudelPath = FilePath.getParent();
             try {
 //                获取截图产生的参数，然后，再与传递进来的内容合并成需要插入的内容
                 String picparam = getinsertname(project, editor, moudelPath);
@@ -249,7 +249,7 @@ public class MyToolWindow {
             assert file != null;
             String filePath = file.getPath();
             Path FilePath = Paths.get(filePath);
-            Path moudelPath = FilePath.getParent().getParent();
+            Path moudelPath = FilePath.getParent();
             try {
 //                获取截图产生的参数，然后，再与传递进来的内容合并成需要插入的内容
                 String picparam = getinsertname(project, editor, moudelPath);
@@ -332,7 +332,7 @@ public class MyToolWindow {
             assert file != null;
             String filePath = file.getPath();
             Path FilePath = Paths.get(filePath);
-            Path moudelPath = FilePath.getParent().getParent();
+            Path moudelPath = FilePath.getParent();
             try {
 //                获取截图产生的参数，然后，再与传递进来的内容合并成需要插入的内容
                 String picparam = getinsertname(project, editor, moudelPath);
@@ -413,7 +413,7 @@ public class MyToolWindow {
             assert file != null;
             String filePath = file.getPath();
             Path FilePath = Paths.get(filePath);
-            Path moudelPath = FilePath.getParent().getParent();
+            Path moudelPath = FilePath.getParent();
             try {
 //                获取截图产生的参数，然后，再与传递进来的内容合并成需要插入的内容
                 String picparam = getinsertname(project, editor, moudelPath);
@@ -494,7 +494,7 @@ public class MyToolWindow {
             assert file != null;
             String filePath = file.getPath();
             Path FilePath = Paths.get(filePath);
-            Path moudelPath = FilePath.getParent().getParent();
+            Path moudelPath = FilePath.getParent();
             try {
 //                获取截图产生的参数，然后，再与传递进来的内容合并成需要插入的内容
                 String picparam = getinsertname(project, editor, moudelPath);
@@ -562,7 +562,7 @@ public class MyToolWindow {
             assert file != null;
             String filePath = file.getPath();
             Path FilePath = Paths.get(filePath);
-            Path moudelPath = FilePath.getParent().getParent();
+            Path moudelPath = FilePath.getParent();
             try {
 //                获取截图产生的参数，然后，再与传递进来的内容合并成需要插入的内容
                 String picparam = getinsertname(project, editor, moudelPath);
@@ -633,7 +633,7 @@ public class MyToolWindow {
             assert file != null;
             String filePath = file.getPath();
             Path FilePath = Paths.get(filePath);
-            Path moudelPath = FilePath.getParent().getParent();
+            Path moudelPath = FilePath.getParent();
             try {
 //                获取截图产生的参数，然后，再与传递进来的内容合并成需要插入的内容
                 String picparam = getinsertname(project, editor, moudelPath);
