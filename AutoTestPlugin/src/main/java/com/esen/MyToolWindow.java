@@ -368,6 +368,7 @@ public class MyToolWindow {
                 } else {
                     insertstring = funcname + "(" + picparam + ", 填入参数" + ")";
                 }
+                insertstring = getInsertPoint(project, insertstring);
                 re_insertdoc(project, editor, insertstring);
             } catch (IOException e) {
                 Messages.showErrorDialog(project, "保存图片失败!", "Error");
