@@ -266,4 +266,30 @@ public class Public {
         }
         return null;
     }
+
+    /**
+     * 检查是否有相应的存放路径，并且，将相应的内容写入到编辑器中，该函数仅仅适用于截图方法，按钮触发的方法插入内容
+     * 需要重新写方法
+     *
+     * @param project    当前激活工程的project实例
+     * @return String 图片参数的插入字符串
+     * @author xiaoshihu
+     * @date 2019/5/6 10:29
+     */
+    public static String getInsertPoint(Project project, String def_input) {
+
+        String inputDialog = Messages.showInputDialog(project, "请填入获取坐标", "Coordinate", Messages.getQuestionIcon(), def_input, null);
+        if (inputDialog != null) {
+            if (inputDialog.length() == 0) {
+                Messages.showErrorDialog(project, "未输入坐标", "Error");
+                return null;
+            }
+            return def_input;
+        }
+        return null;
+    }
+
+    public static void getNothing(Project project) {
+        Messages.showWarningDialog(project, "未获取任何信息", "Nothing");
+    }
 }

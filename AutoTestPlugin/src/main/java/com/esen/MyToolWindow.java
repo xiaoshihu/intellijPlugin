@@ -95,7 +95,12 @@ public class MyToolWindow {
             e.printStackTrace();
         }
         // 将窗口隐藏起来
-        frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
+        frame.setState(JFrame.ICONIFIED);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (delay) {
             delay = false;
             try {
@@ -132,10 +137,12 @@ public class MyToolWindow {
         // 这里表示并没有抓取图片，而是获取了坐标点
         else {
             if (Capture.offsetx == -1 & Capture.offsety == -1) {
+                getNothing(project);
                 return;
             }
             String picparam = "(" + Integer.toString(Capture.offsetx) + "," + Integer.toString(Capture.offsety) + ")";
             String insertstring = funcname + "(" + picparam + ")";
+            insertstring = getInsertPoint(project, insertstring);
             re_insertdoc(project, editor, insertstring);
         }
     }
@@ -158,7 +165,12 @@ public class MyToolWindow {
             e.printStackTrace();
         }
         // 将窗口隐藏起来
-        frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
+        frame.setState(JFrame.ICONIFIED);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (delay) {
             delay = false;
             try {
@@ -195,6 +207,7 @@ public class MyToolWindow {
         // 这里表示并没有抓取图片，而是获取了坐标点
         else {
             if (Capture.offsetx == -1 & Capture.offsety == -1) {
+                getNothing(project);
                 return;
             }
             Messages.showErrorDialog(project, "判断图片存在和消失必须截取图片！", "Error");
@@ -226,7 +239,12 @@ public class MyToolWindow {
             e.printStackTrace();
         }
         // 将窗口隐藏起来
-        frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
+        frame.setState(JFrame.ICONIFIED);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (delay) {
             delay = false;
             try {
@@ -269,6 +287,7 @@ public class MyToolWindow {
         // 这里表示并没有抓取图片，而是获取了坐标点
         else {
             if (Capture.offsetx == -1 & Capture.offsety == -1) {
+                getNothing(project);
                 return;
             }
             String picparam = "(" + Integer.toString(Capture.offsetx) + "," + Integer.toString(Capture.offsety) + ")";
@@ -279,6 +298,7 @@ public class MyToolWindow {
             } else {
                 insertstring = funcname + "(" + picparam + ", 填入参数" + ")";
             }
+            insertstring = getInsertPoint(project, insertstring);
             re_insertdoc(project, editor, insertstring);
         }
     }
@@ -307,7 +327,12 @@ public class MyToolWindow {
             e.printStackTrace();
         }
         // 将窗口隐藏起来
-        frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
+        frame.setState(JFrame.ICONIFIED);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (delay) {
             delay = false;
             try {
@@ -352,6 +377,7 @@ public class MyToolWindow {
         // 这里表示并没有抓取图片，而是获取了坐标点
         else {
             if (Capture.offsetx == -1 & Capture.offsety == -1) {
+                getNothing(project);
                 return;
             }
             String picparam = "(" + Integer.toString(Capture.offsetx) + "," + Integer.toString(Capture.offsety) + ")";
@@ -362,6 +388,7 @@ public class MyToolWindow {
             } else {
                 insertstring = funcname + "(" + picparam + ", 填入参数" + ")";
             }
+            insertstring = getInsertPoint(project, insertstring);
             re_insertdoc(project, editor, insertstring);
         }
     }
@@ -391,7 +418,12 @@ public class MyToolWindow {
             e.printStackTrace();
         }
         // 将窗口隐藏起来
-        frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
+        frame.setState(JFrame.ICONIFIED);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (delay) {
             delay = false;
             try {
@@ -433,6 +465,7 @@ public class MyToolWindow {
         // 这里表示并没有抓取图片，而是获取了坐标点
         else {
             if (Capture.offsetx == -1 & Capture.offsety == -1) {
+                getNothing(project);
                 return;
             }
             String picparam = "(" + Integer.toString(Capture.offsetx) + "," + Integer.toString(Capture.offsety) + ")";
@@ -443,6 +476,7 @@ public class MyToolWindow {
             } else {
                 insertstring = funcname + "(" + picparam + ", " + "填入参数" + ")";
             }
+            insertstring = getInsertPoint(project, insertstring);
             re_insertdoc(project, editor, insertstring);
         }
     }
@@ -472,7 +506,12 @@ public class MyToolWindow {
             e.printStackTrace();
         }
         // 将窗口隐藏起来
-        frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
+        frame.setState(JFrame.ICONIFIED);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (delay) {
             delay = false;
             try {
@@ -508,10 +547,12 @@ public class MyToolWindow {
         // 这里表示并没有抓取图片，而是获取了坐标点
         else {
             if (Capture.offsetx == -1 & Capture.offsety == -1) {
+                getNothing(project);
                 return;
             }
             String picparam = "(" + Integer.toString(Capture.offsetx) + "," + Integer.toString(Capture.offsety) + ")";
             String insertstring = funcname + "(" + picparam + ", " + "填入参数" + ")";
+            insertstring = getInsertPoint(project, insertstring);
             re_insertdoc(project, editor, insertstring);
         }
     }
@@ -540,7 +581,12 @@ public class MyToolWindow {
             e.printStackTrace();
         }
         // 将窗口隐藏起来
-        frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
+        frame.setState(JFrame.ICONIFIED);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (delay) {
             delay = false;
             try {
@@ -576,10 +622,12 @@ public class MyToolWindow {
         // 这里表示并没有抓取图片，而是获取了坐标点
         else {
             if (Capture.offsetx == -1 & Capture.offsety == -1) {
+                getNothing(project);
                 return;
             }
             String picparam = "(" + Integer.toString(Capture.offsetx) + "," + Integer.toString(Capture.offsety) + ")";
             String insertstring = funcname + "(" + picparam + ", " + "steps=-100" + ")";
+            insertstring = getInsertPoint(project, insertstring);
             re_insertdoc(project, editor, insertstring);
         }
     }
@@ -606,7 +654,12 @@ public class MyToolWindow {
             e.printStackTrace();
         }
         // 将窗口隐藏起来
-        frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
+        frame.setState(JFrame.ICONIFIED);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (delay) {
             delay = false;
             try {
@@ -646,9 +699,11 @@ public class MyToolWindow {
         // 这里表示并没有抓取图片，而是获取了坐标点
         else {
             if (Capture.offsetx == -1 & Capture.offsety == -1) {
+                getNothing(project);
                 return null;
             }
             String picparam = "(" + Integer.toString(Capture.offsetx) + "," + Integer.toString(Capture.offsety) + ")";
+            picparam = getInsertPoint(project, picparam);
             return picparam;
         }
         return null;
@@ -676,7 +731,12 @@ public class MyToolWindow {
             e.printStackTrace();
         }
         // 将窗口隐藏起来
-        frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
+        frame.setState(JFrame.ICONIFIED);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (delay) {
             delay = false;
             try {

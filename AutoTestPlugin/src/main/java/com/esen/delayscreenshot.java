@@ -27,7 +27,12 @@ public class delayscreenshot extends screenshot {
             e.printStackTrace();
         }
         // 将窗口隐藏起来
-        frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
+        frame.setState(JFrame.ICONIFIED);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         try {
 

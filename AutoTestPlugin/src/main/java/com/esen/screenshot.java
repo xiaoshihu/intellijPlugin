@@ -34,7 +34,12 @@ public class screenshot extends AnAction {
         } catch (AWTException e) {
             e.printStackTrace();
         }
-        frame.setLocation(-(bounds.width + 100), -(bounds.height + 100));
+        frame.setState(JFrame.ICONIFIED);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         try {
             assert test != null;
             test.captureRectangle();
@@ -69,10 +74,12 @@ public class screenshot extends AnAction {
             if (Capture.offsetx == -1 & Capture.offsety == -1) {
 //                将窗口还原
                 frame.setLocation(bounds.x, bounds.y);
+                getNothing(project);
                 return;
             }
             frame.setLocation(bounds.x, bounds.y);
             String insertname = "(" + Integer.toString(Capture.offsetx) + "," + Integer.toString(Capture.offsety) + ")";
+            insertname = getInsertPoint(project, insertname);
             insertdoc(project, editor, insertname);
         }
     }
