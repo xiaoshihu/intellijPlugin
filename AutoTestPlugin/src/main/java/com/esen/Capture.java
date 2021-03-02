@@ -151,7 +151,7 @@ public class Capture {
             public void mouseReleased(MouseEvent e) {
                 if (haveDragged) {
                     // 对屏幕上面的区域进行截取
-                    pickedImage = fullScreenImage.getSubimage(recX, recY, recW, recH);
+                    pickedImage = fullScreenImage.getSubimage(recX, recY+20, recW, recH);
                     // 将覆盖在屏幕上的图片拿掉
 //                    dialog.setVisible(false);
 //                    dialog.dispose();
